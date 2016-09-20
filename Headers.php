@@ -10,10 +10,11 @@ class Headers extends Component implements BootstrapInterface
 {
     public function bootstrap($app)
     {
-        $app->on(Application::EVENT_BEFORE_REQUEST, function ($e)
+        $app->on(Application::EVENT_BEFORE_REQUEST, function()
         {
-            
-            Yii::$app->response->headers->set('X-Powered-By', 'Hyperia');
+            $headers = Yii::$app->response->headers;
+    
+            $headers->set('X-Powered-By', 'Hyperia');
         });
     }
 }
