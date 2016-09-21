@@ -6,6 +6,37 @@ use \yii\base\Application;
 use \yii\base\Component;
 use Yii;
 
+/**
+ * Implementácia bezpečnostných hlavičiek
+ *
+ * ```php
+ * 'bootstrap'  => [..., 'headers'],
+ * 'components' => [
+ * 		...
+ * 		'headers' => [
+ * 			'class'                   => '\hyperia\security\Headers',
+ *          'upgradeInsecureRequests' => true,
+ *          'blockAllMixedContent'    => true,
+ *          'stsMaxAge'               => 10,
+ *          'xFrameOptions'           => 'DENY',
+ *          'xContentTypeOptions'     => 'nosniff',
+ *          'cspDirectives'           => [
+ *               'default-src' => "'none'",
+ *               'script-src'  => "'self' 'unsafe-inline'",
+ *               'style-src'   => "'self' 'unsafe-inline'",
+ *               'img-src'     => "'self' data:",
+ *               'connect-src' => "'self'",
+ *               'font-src'    => "'self'",
+ *               'object-src'  => "'self'",
+ *               'media-src'   => "'self'",
+ *               'form-action' => "'self'"
+ *          ]
+ *      ]
+ * ]
+ *
+ * ```
+ */
+
 class Headers extends Component implements BootstrapInterface
 {
     /**
@@ -49,15 +80,15 @@ class Headers extends Component implements BootstrapInterface
      * @var array
      */
     private $defaultCspDirectives = [
-        'default-src'     => "'none'",
-        'script-src'      => "'self' 'unsafe-inline'",
-        'style-src'       => "'self' 'unsafe-inline'",
-        'img-src'         => "'self' data:",
-        'connect-src'     => "'self'",
-        'font-src'        => "'self'",
-        'object-src'      => "'self'",
-        'media-src'       => "'self'",
-        'form-action'     => "'self'"
+        'default-src' => "'none'",
+        'script-src'  => "'self' 'unsafe-inline'",
+        'style-src'   => "'self' 'unsafe-inline'",
+        'img-src'     => "'self' data:",
+        'connect-src' => "'self'",
+        'font-src'    => "'self'",
+        'object-src'  => "'self'",
+        'media-src'   => "'self'",
+        'form-action' => "'self'"
     ];
     
     /**
