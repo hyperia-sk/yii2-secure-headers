@@ -27,10 +27,15 @@ class Headers extends Component implements BootstrapInterface
     public $stsMaxAge = 10;
 
     /**
+     * X Frame Options
      * @var string
      */
-    public $xFrameOptions = 'SAMEORIGIN';
-
+    public $xFrameOptions = 'DENY';
+    
+    /**
+     * X Content Type Options
+     * @var string
+     */
     public $xContentTypeOptions = 'nosniff';
 
     /**
@@ -52,9 +57,14 @@ class Headers extends Component implements BootstrapInterface
         'font-src'        => "'self'",
         'object-src'      => "'self'",
         'media-src'       => "'self'",
-        'report-uri'      => "'self'",
         'form-action'     => "'self'"
     ];
+    
+    /**
+     * URL adresa na zbieranie reportov
+     * @var string
+     */
+    private $cspReportUri = ['report-uri' => 'https://hyperia.report-uri.io/r/default/csp/enforce'];
 
     public function bootstrap($app)
     {
@@ -66,23 +76,20 @@ class Headers extends Component implements BootstrapInterface
 
             $headers->set('Server', 'Hyperia Server');
 
+            // Zabezpečí, aby sa nemohol dáavať mailing do iframe
             $headers->set('X-Frame-Options', $this->xFrameOptions);
 
             // Definuje z akých zdrojov sa môžu načítavať zdroje
             $headers->set('Content-Security-Policy', $this->getContentSecurityPolicyDirectives());
 
-
-            //https://plz.report-uri.io/r/default/csp/enforce
-
             // Definuje ze sa stranka najbližších xy sekúnd bude načítavať cez HTTPS
             $headers->set('Strict-Transport-Security', 'max-age='.$this->stsMaxAge.';');
 
-            /**
-             * Zabezpeci aby prehliadac neprekladal subory ak maju napisane ze je to plan text ale detekuje v nom JS
-             */
+            // Zabezpeci aby prehliadac neprekladal subory ak maju napisane ze je to plan text ale detekuje v nom JS
             $headers->set('X-Content-Type-Options', $this->xContentTypeOptions);
 
-            $headers->set('X-XSS-Protection', '1; mode=block; report=https://report-uri.io/');
+            // Reflecting XSS útok
+            $headers->set('X-XSS-Protection', '1; mode=block; report=https://hyperia.report-uri.io/');
 
             // Zatial nepouzivat
             //$headers->set('Public-Key-Pins', '');
@@ -113,10 +120,10 @@ class Headers extends Component implements BootstrapInterface
         {
             $result[] = $directive.' '.$value;
         }
-
+        
+        $result = array_merge($result, $this->cspReportUri);
         $result = implode('; ', $result).'; ';
-
-
+        
         if($this->blockAllMixedContent)
         {
             $result .= 'block-all-mixed-content; ';
