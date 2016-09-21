@@ -146,13 +146,14 @@ class Headers extends Component implements BootstrapInterface
                 }
             }
         }
+    
+        $csp_directives = array_merge($csp_directives, $this->cspReportUri);
 
         foreach($csp_directives as $directive => $value)
         {
             $result[] = $directive.' '.$value;
         }
         
-        $result = array_merge($result, $this->cspReportUri);
         $result = implode('; ', $result).'; ';
         
         if($this->blockAllMixedContent)
