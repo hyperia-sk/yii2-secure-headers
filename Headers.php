@@ -21,7 +21,6 @@ use Yii;
  *          'xFrameOptions'           => 'DENY',
  *          'xContentTypeOptions'     => 'nosniff',
  *          'cspDirectives'           => [
- *               'default-src' => "'none'",
  *               'script-src'  => "'self' 'unsafe-inline'",
  *               'style-src'   => "'self' 'unsafe-inline'",
  *               'img-src'     => "'self' data:",
@@ -29,7 +28,8 @@ use Yii;
  *               'font-src'    => "'self'",
  *               'object-src'  => "'self'",
  *               'media-src'   => "'self'",
- *               'form-action' => "'self'"
+ *               'form-action' => "'self'",
+ *               'frame-src'   => "'self'"
  *          ]
  *      ]
  * ]
@@ -80,7 +80,6 @@ class Headers extends Component implements BootstrapInterface
      * @var array
      */
     private $defaultCspDirectives = [
-        'default-src' => "'none'",
         'script-src'  => "'self' 'unsafe-inline'",
         'style-src'   => "'self' 'unsafe-inline'",
         'img-src'     => "'self' data:",
@@ -97,6 +96,12 @@ class Headers extends Component implements BootstrapInterface
      * @var string
      */
     private $cspReportUri = ['report-uri' => 'https://hyperia.report-uri.io/r/default/csp/enforce'];
+    
+    /**
+     * Prednastavené nastavenie pre Content Security Policy
+     * @var array
+     */
+    private $defaultCsp = ['default-src' => "'none'"];
 
     public function bootstrap($app)
     {
@@ -149,6 +154,7 @@ class Headers extends Component implements BootstrapInterface
         }
     
         $csp_directives = array_merge($csp_directives, $this->cspReportUri);
+        $csp_directives = array_merge($this->defaultCsp, $csp_directives);
 
         foreach($csp_directives as $directive => $value)
         {
