@@ -19,7 +19,6 @@ use Yii;
  *          'blockAllMixedContent'    => true,
  *          'stsMaxAge'               => 10,
  *          'xFrameOptions'           => 'DENY',
- *          'xContentTypeOptions'     => 'nosniff',
  *          'cspDirectives'           => [
  *               'script-src'  => "'self' 'unsafe-inline'",
  *               'style-src'   => "'self' 'unsafe-inline'",
@@ -62,12 +61,6 @@ class Headers extends Component implements BootstrapInterface
      * @var string
      */
     public $xFrameOptions = 'DENY';
-    
-    /**
-     * X Content Type Options
-     * @var string
-     */
-    public $xContentTypeOptions = 'nosniff';
 
     /**
      * Content Security Policy direktívy
@@ -116,14 +109,14 @@ class Headers extends Component implements BootstrapInterface
             // Zabezpečí, aby sa nemohol dáavať mailing do iframe
             $headers->set('X-Frame-Options', $this->xFrameOptions);
 
-            // Definuje z akých zdrojov sa môžu načítavať zdroje
+            // Definuje z akých zdrojov sa môžu načítavať súbory
             $headers->set('Content-Security-Policy', $this->getContentSecurityPolicyDirectives());
 
             // Definuje ze sa stranka najbližších xy sekúnd bude načítavať cez HTTPS
             $headers->set('Strict-Transport-Security', 'max-age='.$this->stsMaxAge.';');
 
             // Zabezpeci aby prehliadac neprekladal subory ak maju napisane ze je to plan text ale detekuje v nom JS
-            $headers->set('X-Content-Type-Options', $this->xContentTypeOptions);
+            $headers->set('X-Content-Type-Options', 'nosniff');
 
             // Reflecting XSS útok
             $headers->set('X-XSS-Protection', '1; mode=block; report=https://hyperia.report-uri.io/');
