@@ -118,7 +118,7 @@ class Headers extends Component implements BootstrapInterface
                 $headers->set('Strict-Transport-Security', 'max-age='.$this->stsMaxAge.';');
         
                 // Zabezpeci aby prehliadac neprekladal subory ak maju napisane ze je to plan text ale detekuje v nom JS
-                $headers->set('X-Content-Type-Options', $this->xContentTypeOptions);
+                $headers->set('X-Content-Type-Options', 'nosniff');
         
                 // Reflecting XSS útok
                 $headers->set('X-XSS-Protection', '1; mode=block; report=https://hyperia.report-uri.io/');
