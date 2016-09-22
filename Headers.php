@@ -100,29 +100,32 @@ class Headers extends Component implements BootstrapInterface
     {
         $app->on(Application::EVENT_BEFORE_REQUEST, function()
         {
-            $headers = Yii::$app->response->headers;
-
-            $headers->set('X-Powered-By', 'Hyperia');
-
-            $headers->set('Server', 'Hyperia Server');
-
-            // Zabezpečí, aby sa nemohol dáavať mailing do iframe
-            $headers->set('X-Frame-Options', $this->xFrameOptions);
-
-            // Definuje z akých zdrojov sa môžu načítavať súbory
-            $headers->set('Content-Security-Policy', $this->getContentSecurityPolicyDirectives());
-
-            // Definuje ze sa stranka najbližších xy sekúnd bude načítavať cez HTTPS
-            $headers->set('Strict-Transport-Security', 'max-age='.$this->stsMaxAge.';');
-
-            // Zabezpeci aby prehliadac neprekladal subory ak maju napisane ze je to plan text ale detekuje v nom JS
-            $headers->set('X-Content-Type-Options', 'nosniff');
-
-            // Reflecting XSS útok
-            $headers->set('X-XSS-Protection', '1; mode=block; report=https://hyperia.report-uri.io/');
-
-            // Zatial nepouzivat
-            //$headers->set('Public-Key-Pins', '');
+            if(isset(Yii::$app->response->headers))
+            {
+                $headers = Yii::$app->response->headers;
+        
+                $headers->set('X-Powered-By', 'Hyperia');
+        
+                $headers->set('Server', 'Hyperia Server');
+        
+                // Zabezpečí, aby sa nemohol dáavať mailing do iframe
+                $headers->set('X-Frame-Options', $this->xFrameOptions);
+        
+                // Definuje z akých zdrojov sa môžu načítavať zdroje
+                $headers->set('Content-Security-Policy', $this->getContentSecurityPolicyDirectives());
+        
+                // Definuje ze sa stranka najbližších xy sekúnd bude načítavať cez HTTPS
+                $headers->set('Strict-Transport-Security', 'max-age='.$this->stsMaxAge.';');
+        
+                // Zabezpeci aby prehliadac neprekladal subory ak maju napisane ze je to plan text ale detekuje v nom JS
+                $headers->set('X-Content-Type-Options', $this->xContentTypeOptions);
+        
+                // Reflecting XSS útok
+                $headers->set('X-XSS-Protection', '1; mode=block; report=https://hyperia.report-uri.io/');
+        
+                // Zatial nepouzivat
+                //$headers->set('Public-Key-Pins', '');
+            }
         });
     }
 
