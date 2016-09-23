@@ -100,7 +100,7 @@ class Headers extends Component implements BootstrapInterface
     {
         $app->on(Application::EVENT_BEFORE_REQUEST, function()
         {
-            if(isset(Yii::$app->response->headers))
+            if(is_callable(Yii::$app->response, 'headers'))
             {
                 $headers = Yii::$app->response->headers;
         
