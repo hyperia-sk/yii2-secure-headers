@@ -28,7 +28,8 @@ use Yii;
  *               'object-src'  => "'self'",
  *               'media-src'   => "'self'",
  *               'form-action' => "'self'",
- *               'frame-src'   => "'self'"
+ *               'frame-src'   => "'self'",
+ * *             'child-src'   => "'self'"
  *          ]
  *      ]
  * ]
@@ -81,7 +82,8 @@ class Headers extends Component implements BootstrapInterface
         'object-src'  => "'self'",
         'media-src'   => "'self'",
         'form-action' => "'self'",
-        'frame-src'   => "'self'"
+        'frame-src'   => "'self'",
+        'child-src'   => "'self'",
     ];
     
     /**
