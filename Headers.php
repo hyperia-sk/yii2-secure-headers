@@ -29,7 +29,7 @@ use Yii;
  *               'media-src'   => "'self'",
  *               'form-action' => "'self'",
  *               'frame-src'   => "'self'",
- * *             'child-src'   => "'self'"
+ *               'child-src'   => "'self'"
  *          ]
  *      ]
  * ]
