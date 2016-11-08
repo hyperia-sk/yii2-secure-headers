@@ -79,12 +79,6 @@ class Headers extends Component implements BootstrapInterface
     public $xPoweredBy = 'Hyperia';
     
     /**
-     * Server
-     * @var string
-     */
-    public $server = 'Hyperia Server';
-    
-    /**
      * Report URI
      * @var string
      */
@@ -117,7 +111,12 @@ class Headers extends Component implements BootstrapInterface
      * URL adresa na zbieranie reportov
      * @var string
      */
-    private $cspReportUri = ['report-uri' => 'https://hyperia.report-uri.io/r/default/csp/enforce'];
+    private function getCspReportUri()
+    {
+        return [
+            'report-uri' => $this->reportUri.'/r/default/csp/enforce'
+        ];
+    }
     
     /**
      * Prednastavené nastavenie pre Content Security Policy
@@ -134,8 +133,6 @@ class Headers extends Component implements BootstrapInterface
                 $headers = Yii::$app->response->headers;
     
                 $headers->set('X-Powered-By', $this->xPoweredBy);
-    
-                $headers->set('Server', $this->server);
                 
                 if(!empty($this->xFrameOptions))
                 {
@@ -185,7 +182,7 @@ class Headers extends Component implements BootstrapInterface
             }
         }
     
-        $csp_directives = array_merge($csp_directives, $this->cspReportUri);
+        $csp_directives = array_merge($csp_directives, $this->getCspReportUri());
         $csp_directives = array_merge($this->defaultCsp, $csp_directives);
 
         foreach($csp_directives as $directive => $value)
