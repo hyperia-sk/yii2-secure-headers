@@ -20,7 +20,6 @@ use Yii;
  *          'stsMaxAge'               => 10,
  *          'xFrameOptions'           => 'DENY',
  *          'xPoweredBy'              => 'Hyperia',
- *          'server'                  => 'Hyperia Server',
  *          'publicKeyPins'           => '',
  *          'cspDirectives'           => [
  *               'script-src'  => "'self' 'unsafe-inline'",
