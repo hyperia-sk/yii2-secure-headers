@@ -19,6 +19,9 @@ use Yii;
  *          'blockAllMixedContent'    => true,
  *          'stsMaxAge'               => 10,
  *          'xFrameOptions'           => 'DENY',
+ *          'xPoweredBy'              => 'Hyperia',
+ *          'server'                  => 'Hyperia Server',
+ *          'publicKeyPins'           => '',
  *          'cspDirectives'           => [
  *               'script-src'  => "'self' 'unsafe-inline'",
  *               'style-src'   => "'self' 'unsafe-inline'",
@@ -55,7 +58,7 @@ class Headers extends Component implements BootstrapInterface
      * Strict Transport Security
      * @var int
      */
-    public $stsMaxAge = 10;
+    public $stsMaxAge = '';
 
     /**
      * X Frame Options
@@ -68,6 +71,30 @@ class Headers extends Component implements BootstrapInterface
      * @var array
      */
     public $cspDirectives = [];
+    
+    /**
+     * Powered By
+     * @var string
+     */
+    public $xPoweredBy = 'Hyperia';
+    
+    /**
+     * Server
+     * @var string
+     */
+    public $server = 'Hyperia Server';
+    
+    /**
+     * Report URI
+     * @var string
+     */
+    public $reportUri = 'https://hyperia.report-uri.io';
+    
+    /**
+     * Public Key Pins
+     * @var string
+     */
+    public $publicKeyPins = '';
 
     /**
      * Prednastavené Content Security Policy direktívy
@@ -102,29 +129,39 @@ class Headers extends Component implements BootstrapInterface
     {
         $app->on(Application::EVENT_BEFORE_REQUEST, function()
         {
-            $headers = Yii::$app->response->headers;
+            if(is_a(Yii::$app, 'yii\web\Application'))
+            {
+                $headers = Yii::$app->response->headers;
     
-            $headers->set('X-Powered-By', 'Hyperia');
+                $headers->set('X-Powered-By', $this->xPoweredBy);
     
-            $headers->set('Server', 'Hyperia Server');
+                $headers->set('Server', $this->server);
+                
+                if(!empty($this->xFrameOptions))
+                {
+                    $headers->set('X-Frame-Options', $this->xFrameOptions);
+                }
     
-            // Zabezpečí, aby sa nemohol dáavať mailing do iframe
-            $headers->set('X-Frame-Options', $this->xFrameOptions);
+                $content_security_policy = $this->getContentSecurityPolicyDirectives();
+                if(!empty($content_security_policy))
+                {
+                    $headers->set('Content-Security-Policy', $content_security_policy);
+                }
     
-            // Definuje z akých zdrojov sa môžu načítavať zdroje
-            $headers->set('Content-Security-Policy', $this->getContentSecurityPolicyDirectives());
+                if(!empty($this->stsMaxAge))
+                {
+                    $headers->set('Strict-Transport-Security', 'max-age='.$this->stsMaxAge.';');
+                }
+                
+                $headers->set('X-Content-Type-Options', 'nosniff');
+                
+                $headers->set('X-XSS-Protection', '1; mode=block; report='.$this->reportUri.'/');
     
-            // Definuje ze sa stranka najbližších xy sekúnd bude načítavať cez HTTPS
-            $headers->set('Strict-Transport-Security', 'max-age='.$this->stsMaxAge.';');
-    
-            // Zabezpeci aby prehliadac neprekladal subory ak maju napisane ze je to plan text ale detekuje v nom JS
-            $headers->set('X-Content-Type-Options', 'nosniff');
-    
-            // Reflecting XSS útok
-            $headers->set('X-XSS-Protection', '1; mode=block; report=https://hyperia.report-uri.io/');
-    
-            // Zatial nepouzivat
-            //$headers->set('Public-Key-Pins', '');
+                if(!empty($this->publicKeyPins))
+                {
+                    $headers->set('Public-Key-Pins', $this->publicKeyPins);
+                }
+            }
         });
     }
 
