@@ -9,7 +9,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "hyperia\\security\\": ""
+      "hyperia\\security\\": "src/"
     }
   },
   "require": {
