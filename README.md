@@ -23,7 +23,7 @@ opatrnejšie z menšími časmi a postupne zvyšovať
 
 
 | Source Value       | Example                    | Description                                                                                                                                         |
-|--------------------|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------:|
+|--------------------|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | *                  | img-src *                  | Wildcard, allows any URL except data: blob: filesystem: schemes.                                                                                    |
 | 'none'             | object-src 'none'          | Prevents loading resources from any source.                                                                                                         |
 | 'self'             | script-src 'self'          | Allows loading resources from the same origin (same scheme, host and port).                                                                         |
