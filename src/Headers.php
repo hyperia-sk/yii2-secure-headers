@@ -139,7 +139,7 @@ class Headers extends Component implements BootstrapInterface
     private function getContentSecurityPolicyDirectives()
     {
         $csp_directives = $this->defaultCspDirectives;
-        $result         = '';
+        $result         = [];
 
         if(!empty($this->cspDirectives) && is_array($this->cspDirectives))
         {
