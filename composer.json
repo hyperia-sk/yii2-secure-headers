@@ -1,18 +1,36 @@
 {
-  "name": "hyperia/secure-headers",
-  "type": "yii2-extension",
-  "authors": [
-    {
-      "name": "Ing. Lukáš Hrdlička",
-      "email": "lukas.hrdlicka@hyperia.sk"
+    "name": "hyperia/secure-headers",
+    "description": "Secure headers for your Yii2 app",
+    "keywords": ["yii", "headers", "secure", "extension"],
+    "type": "yii2-extension",
+    "support": {
+        "source": "https://github.com/hyperia-sk/secure-headers/"
+    },
+    "authors": [
+        {
+            "name": "Lukas Hrdlicka",
+            "email": "lukas.hrdlicka@hyperia.sk"
+        },
+        {
+            "name": "Lukas Mestan",
+            "email": "lukas.mestan@hyperia.sk"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "*",
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "hyperia\\security\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "hyperia\\security\\tests\\": "tests/"
+        }
     }
-  ],
-  "autoload": {
-    "psr-4": {
-      "hyperia\\security\\": "src/"
-    }
-  },
-  "require": {
-    "yiisoft/yii2": "*"
-  }
 }
