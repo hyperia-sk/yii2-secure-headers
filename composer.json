@@ -1,10 +1,10 @@
 {
-    "name": "hyperia/secure-headers",
+    "name": "hyperia/yii2-secure-headers",
     "description": "Secure headers for your Yii2 app",
-    "keywords": ["yii", "headers", "secure", "extension"],
+    "keywords": ["yii2", "headers", "secure", "extension"],
     "type": "yii2-extension",
     "support": {
-        "source": "https://github.com/hyperia-sk/secure-headers/"
+        "source": "https://github.com/hyperia-sk/yii2-secure-headers/"
     },
     "authors": [
         {

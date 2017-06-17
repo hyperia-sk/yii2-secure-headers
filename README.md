@@ -1,26 +1,44 @@
-# Bezpečnostné hlavičky
-Každá aplikácia by mala obsahovať bezpečnostné hlavičky CSP (Content Security Policy). Tento komponent automaticky
-implemntuje tieto hlavičky do každej požiadavky.
+# Yii2 security headers extension
 
-- **upgradeInsecureRequests** - pokúsi sa nadviatať nazabezpečneé spojenia cez HTTPS
-- **blockAllMixedContent** - zablokovanie zmiešaného obsahu HTTP + HTTPS
-- **stsMaxAge** - maximálna doba počas ktorej bude nadväzovať spojenie cez HTTPS. Pri prvotnej implementácii začínať radšej
-opatrnejšie z menšími časmi a postupne zvyšovať
-- **xFrameOptions** - určuje, či sa môže načítavať stránka cez iframe
-- **xPoweredBy** - zmení hlavičku PoweredBy
-- **publicKeyPins** - špeciálny verejný kľúč
-- **cspDirectives** - direktívy Content Security Policy
-  - script-src 
-  - style-src
-  - img-src
-  - connect-src
-  - font-src
-  - object-src
-  - media-src
-  - form-action
-  - frame-src
-  - child-src
+> Add security related headers to HTTP response. The package includes extension for easy Yii2 integration.
 
+## Installation
+
+```
+composer require hyperia/yii2-secure-headers
+```
+
+## Configuration (usage)
+
+```php
+'bootstrap'  => [..., 'headers'],
+'components' => [
+    ...
+    'headers' => [
+        'class' => '\hyperia\security\Headers',
+        'upgradeInsecureRequests' => true,
+        'blockAllMixedContent' => true,
+        'stsMaxAge' => 10,
+        'xFrameOptions' => 'DENY',
+        'xPoweredBy' => 'Hyperia',
+        'publicKeyPins' => '',
+        'cspDirectives' => [
+            'script-src' => "'self' 'unsafe-inline'",
+            'style-src' => "'self' 'unsafe-inline'",
+            'img-src' => "'self' data:",
+            'connect-src' => "'self'",
+            'font-src' => "'self'",
+            'object-src' => "'self'",
+            'media-src' => "'self'",
+            'form-action' => "'self'",
+            'frame-src' => "'self'",
+            'child-src' => "'self'"
+        ]
+    ]
+]
+```
+
+## Parameter description
 
 | Source Value       | Example                    | Description                                                                                                                                         |
 |--------------------|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -35,33 +53,21 @@ opatrnejšie z menšími časmi a postupne zvyšovať
 | 'unsafe-inline'    | script-src 'unsafe-inline' | Allows use of inline source elements such as style attribute, onclick, or script tag bodies (depends on the context of the source it is applied to) |
 | 'unsafe-eval'      | script-src 'unsafe-eval'   | Allows unsafe dynamic code evaluation such as JavaScript eval()                                                                                     |
 
+#### Policy
 
-### Implementácia bezpečnostných hlavičiek
+Each header has a reference link in config file, you should read it if you do not know the header. 
+If you want to disable a string type header, just set to null or empty string.
 
-```php
-'bootstrap'  => [..., 'headers'],
-'components' => [
-		...
-		'headers' => [
-			'class'                   => '\hyperia\security\Headers',
-         'upgradeInsecureRequests' => true,
-         'blockAllMixedContent'    => true,
-         'stsMaxAge'               => 10,
-         'xFrameOptions'           => 'DENY',
-         'xPoweredBy'              => 'Hyperia',
-         'publicKeyPins'           => '',
-         'cspDirectives'           => [
-              'script-src'  => "'self' 'unsafe-inline'",
-              'style-src'   => "'self' 'unsafe-inline'",
-              'img-src'     => "'self' data:",
-              'connect-src' => "'self'",
-              'font-src'    => "'self'",
-              'object-src'  => "'self'",
-              'media-src'   => "'self'",
-              'form-action' => "'self'",
-              'frame-src'   => "'self'",
-              'child-src'   => "'self'"
-         ]
-     ]
-]
-```
+#### Public Key Pinning
+
+When hashes is empty array, this header will not add to http response.
+
+#### Content Security Policy
+
+We use paragonie/csp-builder to help us support csp header. 
+If you want to disable csp header, set custom-csp to empty string.
+
+#### Additional Resources
+
+[Everything you need to know about HTTP security headers](https://blog.appcanary.com/2017/http-security-headers.html)
+
