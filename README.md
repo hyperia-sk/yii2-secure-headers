@@ -1,5 +1,7 @@
 # Yii2 security headers extension
 
+[![Build Status](https://travis-ci.org/hyperia-sk/yii2-secure-headers.svg)](https://travis-ci.org/hyperia-sk/yii2-secure-headers) [![License](https://poser.pugx.org/hyperia/yii2-secure-headers/license)](https://packagist.org/packages/hyperia/yii2-secure-headers) [![Latest Stable Version](https://poser.pugx.org/hyperia/yii2-secure-headers/v/stable)](https://packagist.org/packages/hyperia/yii2-secure-headers)
+
 > Add security related headers to HTTP response. The package includes extension for easy Yii2 integration.
 
 ## Installation
