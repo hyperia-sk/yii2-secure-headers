@@ -24,6 +24,7 @@ composer require hyperia/yii2-secure-headers:"1.0.0"
         'xFrameOptions' => 'DENY',
         'xPoweredBy' => 'Hyperia',
         'publicKeyPins' => '',
+        'reportUri' => 'https://company.report-uri.io'
         'cspDirectives' => [
             'script-src' => "'self' 'unsafe-inline'",
             'style-src' => "'self' 'unsafe-inline'",
