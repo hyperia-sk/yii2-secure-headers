@@ -6,8 +6,8 @@
 
 ## Installation
 
-```
-composer require hyperia/yii2-secure-headers:"1.0.0"
+```shell
+composer require hyperia/yii2-secure-headers:"^1.0"
 ```
 
 ## Configuration (usage)
