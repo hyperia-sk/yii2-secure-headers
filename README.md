@@ -4,9 +4,21 @@
 
 ## Installation
 
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+
+Either run
+
+```shell
+composer require hyperia/yii2-secure-headers:"^1.0"
 ```
-composer require hyperia/yii2-secure-headers
+
+or add
+
 ```
+"hyperia/yii2-secure-headers": "^1.0"
+```
+
+to the require section of your composer.json.
 
 ## Configuration (usage)
 
