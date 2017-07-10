@@ -7,3 +7,4 @@ themes/classic/views/
 /nbproject/*
 phpunit.xml
 vendor/*
+composer.lock
