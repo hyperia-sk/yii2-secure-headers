@@ -16,7 +16,7 @@ class Headers extends Component implements BootstrapInterface
 {
 
     /**
-     * Insecure requesth
+     * Insecure request
      * 
      * @access public
      * @var boolean
@@ -78,6 +78,22 @@ class Headers extends Component implements BootstrapInterface
      * @var string
      */
     public $publicKeyPins = '';
+
+    /**
+     * Require Subresource Integrity for script
+     *
+     * @access public
+     * @var bool
+     */
+    public $requireSriForScript = false;
+
+    /**
+     * Require Subresource Integrity for style
+     *
+     * @access public
+     * @var bool
+     */
+    public $requireSriForStyle = false;
 
     /**
      * Default Content Security Policy directives
@@ -163,15 +179,41 @@ class Headers extends Component implements BootstrapInterface
     }
 
     /**
-     * Get content security policy directives
-     * 
-     * @acccess private
-     * @return string
+     * CSP subresource integrity
+     *
+     * @access private
+     * @return array
      */
-    private function getContentSecurityPolicyDirectives() 
+    private function getCspSubresourceIntegrity()
+    {
+        $result = [];
+
+        if ($this->requireSriForScript) {
+            $values[] = 'script';
+        }
+
+        if ($this->requireSriForStyle) {
+            $values[] = 'style';
+        }
+
+        if (!empty($values)) {
+            $result = [
+                'require-sri-for' => implode(' ', $values)
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Build array with directive as key and parameter as value
+     *
+     * @access private
+     * @return array
+     */
+    private function buildCspArray()
     {
         $csp_directives = $this->defaultCspDirectives;
-        $result = [];
 
         if (!empty($this->cspDirectives) && is_array($this->cspDirectives)) {
             foreach ($this->cspDirectives as $directive => $value) {
@@ -181,14 +223,23 @@ class Headers extends Component implements BootstrapInterface
             }
         }
 
-        $csp_directives = array_merge($csp_directives, $this->getCspReportUri());
-        $csp_directives = array_merge($this->defaultCsp, $csp_directives);
+        return array_merge($this->defaultCsp, $csp_directives, $this->getCspSubresourceIntegrity(), $this->getCspReportUri());
+    }
+
+    /**
+     * Get content security policy directives
+     * 
+     * @access private
+     * @return string
+     */
+    private function getContentSecurityPolicyDirectives() 
+    {
+        $result = '';
+        $csp_directives = $this->buildCspArray();
 
         foreach ($csp_directives as $directive => $value) {
-            $result[] = $directive . ' ' . $value;
+            $result .= $directive . ' ' . $value . '; ';
         }
-
-        $result = implode('; ', $result) . '; ';
 
         if ($this->blockAllMixedContent) {
             $result .= 'block-all-mixed-content; ';
@@ -200,5 +251,4 @@ class Headers extends Component implements BootstrapInterface
 
         return trim($result, '; ');
     }
-
 }
