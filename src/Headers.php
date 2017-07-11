@@ -69,7 +69,7 @@ class Headers extends Component implements BootstrapInterface
      * @access public
      * @var string
      */
-    public $reportUri = 'https://hyperia.report-uri.io';
+    public $reportUri = '';
 
     /**
      * Public Key Pins

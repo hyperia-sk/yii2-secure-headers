@@ -36,6 +36,7 @@ to the require section of your composer.json.
         'xFrameOptions' => 'DENY',
         'xPoweredBy' => 'Hyperia',
         'publicKeyPins' => '',
+        'reportUri' => 'https://company.report-uri.io',
         'cspDirectives' => [
             'script-src' => "'self' 'unsafe-inline'",
             'style-src' => "'self' 'unsafe-inline'",
