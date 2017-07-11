@@ -74,6 +74,66 @@ class HeaderTest extends TestCase
     }
 
     /**
+     * Test subresource integrity directive for script
+     */
+    public function testSubresourceIntegrityForScript()
+    {
+        $this->headers->requireSriForScript = true;
+        $sri = $this->invokeMethod($this->headers, 'getCspSubresourceIntegrity');
+
+        $arrayKey = 'require-sri-for';
+        $this->assertNotEmpty($sri);
+        $this->assertArrayHasKey($arrayKey, $sri);
+        $this->assertNotEmpty($sri[$arrayKey]);
+        $this->assertEquals('script', $sri[$arrayKey]);
+    }
+
+    /**
+     * Test subresource integrity directive for style
+     */
+    public function testSubresourceIntegrityForStyle()
+    {
+        $this->headers->requireSriForStyle = true;
+        $sri = $this->invokeMethod($this->headers, 'getCspSubresourceIntegrity');
+
+        $arrayKey = 'require-sri-for';
+        $this->assertNotEmpty($sri);
+        $this->assertArrayHasKey($arrayKey, $sri);
+        $this->assertNotEmpty($sri[$arrayKey]);
+        $this->assertEquals('style', $sri[$arrayKey]);
+    }
+
+    /**
+     * Test subresource integrity directive for both style and script
+     */
+    public function testSubresourceIntegrityForStyleAndScript()
+    {
+        $this->headers->requireSriForStyle = true;
+        $this->headers->requireSriForScript = true;
+        $sri = $this->invokeMethod($this->headers, 'getCspSubresourceIntegrity');
+
+        $arrayKey = 'require-sri-for';
+        $this->assertNotEmpty($sri);
+        $this->assertArrayHasKey($arrayKey, $sri);
+        $this->assertNotEmpty($sri[$arrayKey]);
+        $this->assertEquals('script style', $sri[$arrayKey]);
+    }
+
+    /**
+     * Test if first directive is default-src
+     */
+    public function testDefaultDirectiveIsFirst()
+    {
+        $csp = $this->invokeMethod($this->headers, 'buildCspArray');
+
+        $first_value = reset($csp);
+        $first_key = key($csp);
+
+        $this->assertEquals('default-src', $first_key);
+        $this->assertEquals("'none'", $first_value);
+    }
+
+    /**
      * Test CSP headers
      */
     public function testDefaultCSP()
@@ -85,6 +145,7 @@ class HeaderTest extends TestCase
         $this->assertContains('script-src', $csp);
         $this->assertContains('worker-src', $csp);
         $this->assertContains('report-uri', $csp);
+        $this->assertNotContains('require-sri-for', $csp);
         $this->assertContains('block-all-mixed-content', $csp);
         $this->assertContains('upgrade-insecure-requests', $csp);
     }
@@ -112,5 +173,4 @@ class HeaderTest extends TestCase
         $this->assertNotEmpty($csp);
         $this->assertNotContains('upgrade-insecure-requests', $csp);
     }
-    
 }

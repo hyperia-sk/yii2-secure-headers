@@ -30,6 +30,8 @@ to the require section of your composer.json.
         'class' => '\hyperia\security\Headers',
         'upgradeInsecureRequests' => true,
         'blockAllMixedContent' => true,
+        'requireSriForScript' => false,
+        'requireSriForStyle' => false,
         'stsMaxAge' => 10,
         'xFrameOptions' => 'DENY',
         'xPoweredBy' => 'Hyperia',
@@ -79,6 +81,10 @@ When hashes is empty array, this header will not add to http response.
 
 We use paragonie/csp-builder to help us support csp header. 
 If you want to disable csp header, set custom-csp to empty string.
+
+#### Subresource Integrity
+
+If you want to require subresource integrity for style and script sources set `requireSriForStyle` and `requireSriForScript` to `true`
 
 #### Additional Resources
 
