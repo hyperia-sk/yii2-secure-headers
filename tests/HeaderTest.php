@@ -83,6 +83,7 @@ class HeaderTest extends TestCase
         $this->assertNotEmpty($csp);
         $this->assertContains('default-src', $csp);
         $this->assertContains('script-src', $csp);
+        $this->assertContains('worker-src', $csp);
         $this->assertContains('report-uri', $csp);
         $this->assertContains('block-all-mixed-content', $csp);
         $this->assertContains('upgrade-insecure-requests', $csp);

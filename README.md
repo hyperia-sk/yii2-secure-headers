@@ -44,7 +44,8 @@ to the require section of your composer.json.
             'media-src' => "'self'",
             'form-action' => "'self'",
             'frame-src' => "'self'",
-            'child-src' => "'self'"
+            'child-src' => "'self'",
+            'worker-src' => "'self'"
         ]
     ]
 ]

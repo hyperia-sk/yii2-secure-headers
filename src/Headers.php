@@ -96,6 +96,7 @@ class Headers extends Component implements BootstrapInterface
         'form-action' => "'self'",
         'frame-src' => "'self'",
         'child-src' => "'self'",
+        'worker-src' => "'self'"
     ];
 
     /**
