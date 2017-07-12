@@ -3,6 +3,7 @@
     "description": "Secure headers for your Yii2 app",
     "keywords": ["yii2", "headers", "secure", "extension"],
     "type": "yii2-extension",
+    "license": "MIT",
     "support": {
         "source": "https://github.com/hyperia-sk/yii2-secure-headers/"
     },
