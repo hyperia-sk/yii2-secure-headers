@@ -96,6 +96,22 @@ class Headers extends Component implements BootstrapInterface
     public $requireSriForStyle = false;
 
     /**
+     * X-XSS-Protection
+     * 
+     * @access public
+     * @var boolean
+     */
+    public $xssProtection = true;
+
+    /**
+     * X-Content-Type-Options
+     *
+     * @access public
+     * @var boolean
+     */
+    public $contentTypeOptions = true;
+
+    /**
      * Default Content Security Policy directives
      * 
      * @access private
@@ -154,9 +170,13 @@ class Headers extends Component implements BootstrapInterface
                     $headers->set('Strict-Transport-Security', 'max-age=' . $this->stsMaxAge . ';');
                 }
 
-                $headers->set('X-Content-Type-Options', 'nosniff');
+                if ($this->contentTypeOptions) {
+                    $headers->set('X-Content-Type-Options', 'nosniff');
+                }
 
-                $headers->set('X-XSS-Protection', '1; mode=block; report=' . $this->reportUri . '/');
+                if ($this->xssProtection) {
+                    $headers->set('X-XSS-Protection', '1; mode=block; report=' . $this->reportUri . '/');
+                }
 
                 if (!empty($this->publicKeyPins)) {
                     $headers->set('Public-Key-Pins', $this->publicKeyPins);

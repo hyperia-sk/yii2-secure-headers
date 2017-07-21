@@ -173,4 +173,28 @@ class HeaderTest extends TestCase
         $this->assertNotEmpty($csp);
         $this->assertNotContains('upgrade-insecure-requests', $csp);
     }
+
+    /**
+     * Test disable xss protection
+     */
+    public function testCSPWithDisableXssProtection()
+    {
+        $this->headers->xssProtection = false;
+        $csp = $this->invokeMethod($this->headers, 'getContentSecurityPolicyDirectives');
+
+        $this->assertNotEmpty($csp);
+        $this->assertNotContains('X-XSS-Protection', $csp);
+    }
+
+    /**
+     * Test disable content type options
+     */
+    public function testCSPWithDisableContentTypeOptions()
+    {
+        $this->headers->contentTypeOptions = false;
+        $csp = $this->invokeMethod($this->headers, 'getContentSecurityPolicyDirectives');
+
+        $this->assertNotEmpty($csp);
+        $this->assertNotContains('X-Content-Type-Options', $csp);
+    }
 }
