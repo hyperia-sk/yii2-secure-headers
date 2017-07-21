@@ -151,7 +151,7 @@ class HeaderTest extends TestCase
     }
 
     /**
-     * Text disable mixed content 
+     * Text disable mixed content
      */
     public function testCSPWithDisableMixedContent()
     {

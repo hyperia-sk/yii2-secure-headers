@@ -9,15 +9,15 @@ use yii\base\Component;
 
 /**
  * Secure Headers Component
- * 
+ *
  * @package hyperia\security
  */
-class Headers extends Component implements BootstrapInterface 
+class Headers extends Component implements BootstrapInterface
 {
 
     /**
      * Insecure request
-     * 
+     *
      * @access public
      * @var boolean
      */
@@ -25,7 +25,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Block disable mixed content
-     * 
+     *
      * @access public
      * @var boolean
      */
@@ -33,7 +33,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Strict Transport Security
-     * 
+     *
      * @access public
      * @var integer
      */
@@ -41,7 +41,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * X Frame Options
-     * 
+     *
      * @access public
      * @var string
      */
@@ -49,7 +49,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Content Security Policy directive
-     * 
+     *
      * @access public
      * @var array
      */
@@ -57,7 +57,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Powered By
-     * 
+     *
      * @access public
      * @var string
      */
@@ -65,7 +65,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Report URI
-     * 
+     *
      * @access public
      * @var string
      */
@@ -73,7 +73,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Public Key Pins
-     * 
+     *
      * @access public
      * @var string
      */
@@ -97,7 +97,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * X-XSS-Protection
-     * 
+     *
      * @access public
      * @var boolean
      */
@@ -113,7 +113,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Default Content Security Policy directives
-     * 
+     *
      * @access private
      * @var array
      */
@@ -133,7 +133,7 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Default Content Security Policy
-     * 
+     *
      * @access private
      * @var array
      */
@@ -144,14 +144,14 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Bootstrap (set up before request event)
-     * 
+     *
      * @access public
      * @param \yii\web\Application $app
      * @return void
      */
-    public function bootstrap($app) 
+    public function bootstrap($app)
     {
-        $app->on(Application::EVENT_BEFORE_REQUEST, function() {
+        $app->on(Application::EVENT_BEFORE_REQUEST, function () {
             if (is_a(Yii::$app, 'yii\web\Application')) {
                 $headers = Yii::$app->response->headers;
 
@@ -187,11 +187,11 @@ class Headers extends Component implements BootstrapInterface
     
     /**
      * CSP report uri
-     * 
+     *
      * @access private
      * @return array
      */
-    private function getCspReportUri() 
+    private function getCspReportUri()
     {
         return [
             'report-uri' => $this->reportUri . '/r/default/csp/enforce'
@@ -248,11 +248,11 @@ class Headers extends Component implements BootstrapInterface
 
     /**
      * Get content security policy directives
-     * 
+     *
      * @access private
      * @return string
      */
-    private function getContentSecurityPolicyDirectives() 
+    private function getContentSecurityPolicyDirectives()
     {
         $result = '';
         $csp_directives = $this->buildCspArray();

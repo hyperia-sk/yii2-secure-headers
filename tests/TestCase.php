@@ -11,7 +11,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Populates Yii::$app with a new application
      * The application will be destroyed on tearDown() automatically.
-     * 
+     *
      * @access protected
      * @param array $config The application configuration, if needed
      * @param string $appClass name of the application class to create
@@ -43,5 +43,4 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         return $method->invokeArgs($object, $parameters);
     }
-
 }
