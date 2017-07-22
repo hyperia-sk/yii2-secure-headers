@@ -134,6 +134,25 @@ class HeaderTest extends TestCase
     }
 
     /**
+     * Test csp without report uri
+     */
+    public function testBuildCspArrayWithoutReportUri()
+    {
+        $csp = $this->invokeMethod($this->headers, 'buildCspArray');
+        $this->assertArrayNotHasKey('report-uri', $csp);
+    }
+
+    /**
+     * Test csp with report uri
+     */
+    public function testBuildCspArrayWithReportUri()
+    {
+        $this->headers->reportUri = 'https://companyname.report-uri.io';
+        $csp = $this->invokeMethod($this->headers, 'buildCspArray');
+        $this->assertArrayHasKey('report-uri', $csp);
+    }
+
+    /**
      * Test CSP headers
      */
     public function testDefaultCSP()
@@ -144,7 +163,6 @@ class HeaderTest extends TestCase
         $this->assertContains('default-src', $csp);
         $this->assertContains('script-src', $csp);
         $this->assertContains('worker-src', $csp);
-        $this->assertContains('report-uri', $csp);
         $this->assertNotContains('require-sri-for', $csp);
         $this->assertContains('block-all-mixed-content', $csp);
         $this->assertContains('upgrade-insecure-requests', $csp);
