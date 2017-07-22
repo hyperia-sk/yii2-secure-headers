@@ -36,6 +36,8 @@ to the require section of your composer.json.
         'blockAllMixedContent' => true,
         'requireSriForScript' => false,
         'requireSriForStyle' => false,
+        'xssProtection' => true,
+        'contentTypeOptions' => true,
         'stsMaxAge' => 10,
         'xFrameOptions' => 'DENY',
         'xPoweredBy' => 'Hyperia',
