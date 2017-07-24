@@ -8,3 +8,4 @@ themes/classic/views/
 phpunit.xml
 vendor/*
 composer.lock
+.php_cs_cache

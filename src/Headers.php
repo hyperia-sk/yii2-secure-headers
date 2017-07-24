@@ -175,7 +175,7 @@ class Headers extends Component implements BootstrapInterface
                 }
 
                 if ($this->xssProtection) {
-                    $headers->set('X-XSS-Protection', '1; mode=block; report=' . $this->reportUri . '/');
+                    $headers->set('X-XSS-Protection', '1; mode=block;' . $this->getXssProtectionReportPart());
                 }
 
                 if (!empty($this->publicKeyPins)) {
@@ -183,6 +183,22 @@ class Headers extends Component implements BootstrapInterface
                 }
             }
         });
+    }
+
+    /**
+     * Get report part for X-XSS-Protection header
+     *
+     * @access private
+     * @return string
+     */
+    private function getXssProtectionReportPart()
+    {
+        $report = '';
+        if (!empty($this->reportUri)) {
+            $report = ' report=' . $this->reportUri . '/';
+        }
+
+        return $report;
     }
     
     /**
@@ -193,9 +209,14 @@ class Headers extends Component implements BootstrapInterface
      */
     private function getCspReportUri()
     {
-        return [
-            'report-uri' => $this->reportUri . '/r/default/csp/enforce'
-        ];
+        $report = [];
+        if (!empty($this->reportUri)) {
+            $report = [
+                'report-uri' => $this->reportUri . '/r/default/csp/enforce'
+            ];
+        }
+
+        return $report;
     }
 
     /**
