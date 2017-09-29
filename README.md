@@ -1,6 +1,7 @@
 # Yii2 security headers extension
 
 [![Build Status](https://travis-ci.org/hyperia-sk/yii2-secure-headers.svg?branch=master)](https://travis-ci.org/hyperia-sk/yii2-secure-headers) 
+[![codecov](https://codecov.io/gh/hyperia-sk/yii2-secure-headers/branch/master/graph/badge.svg)](https://codecov.io/gh/hyperia-sk/yii2-secure-headers)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/hyperia-sk/yii2-secure-headers/master/LICENSE) 
 [![Latest Stable Version](https://poser.pugx.org/hyperia/yii2-secure-headers/v/stable)](https://packagist.org/packages/hyperia/yii2-secure-headers)
 
