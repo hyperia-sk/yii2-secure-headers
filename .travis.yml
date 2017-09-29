@@ -9,3 +9,9 @@ before_script:
     - composer self-update
     - composer global require "fxp/composer-asset-plugin":"*"
     - composer install --prefer-source --no-interaction
+
+script:
+    - vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
