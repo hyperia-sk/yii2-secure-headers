@@ -56,6 +56,14 @@ class Headers extends Component implements BootstrapInterface
     public $cspDirectives = [];
 
     /**
+     * Content Security Policy directive
+     *
+     * @access public
+     * @var array
+     */
+    public $featurePolicyDirectives = [];
+
+    /**
      * Powered By
      *
      * @access public
@@ -104,6 +112,14 @@ class Headers extends Component implements BootstrapInterface
     public $xssProtection = true;
 
     /**
+     * Referrer policy header
+     *
+     * @access public
+     * @var string
+     */
+    public $referrerPolicy = '';
+
+    /**
      * X-Content-Type-Options
      *
      * @access public
@@ -129,6 +145,31 @@ class Headers extends Component implements BootstrapInterface
         'frame-src' => "'self'",
         'child-src' => "'self'",
         'worker-src' => "'self'"
+    ];
+
+    /**
+     * Default Feature Policy directives
+     *
+     * @access private
+     * @var array
+     */
+    private $defaultFeaturePolicyDirectives = [
+        'accelerometer' => "'self'",
+        'ambient-light-sensor' => "'self'",
+        'autoplay' => "'self'",
+        'camera' => "'self'",
+        'encrypted-media' => "'self'",
+        'fullscreen' => "'self'",
+        'geolocation' => "'self'",
+        'gyroscope' => "'self'",
+        'magnetometer' => "'self'",
+        'microphone' => "'self'",
+        'midi' => "'self'",
+        'payment' => "'self'",
+        'picture-in-picture' => "*",
+        'speaker' => "'self'",
+        'usb' => "'self'",
+        'vr' => "'self'"
     ];
 
     /**
@@ -166,6 +207,11 @@ class Headers extends Component implements BootstrapInterface
                     $headers->set('Content-Security-Policy', $content_security_policy);
                 }
 
+                $feature_policy = $this->getFeaturePolicyDirectives();
+                if (!empty($feature_policy)) {
+                    $headers->set('Feature-Policy', $feature_policy);
+                }
+
                 if (!empty($this->stsMaxAge)) {
                     $headers->set('Strict-Transport-Security', 'max-age=' . $this->stsMaxAge . ';');
                 }
@@ -180,6 +226,10 @@ class Headers extends Component implements BootstrapInterface
 
                 if (!empty($this->publicKeyPins)) {
                     $headers->set('Public-Key-Pins', $this->publicKeyPins);
+                }
+
+                if ($this->isValidReferrerPolicyValue($this->referrerPolicy)) {
+                    $headers->set('Referrer-Policy', $this->referrerPolicy);
                 }
             }
         });
@@ -200,7 +250,7 @@ class Headers extends Component implements BootstrapInterface
 
         return $report;
     }
-    
+
     /**
      * CSP report uri
      *
@@ -268,6 +318,45 @@ class Headers extends Component implements BootstrapInterface
     }
 
     /**
+     * Build array with directive as key and parameter as value
+     *
+     * @access private
+     * @return array
+     */
+    private function buildFuturePolicyArray()
+    {
+        $feature_directives = $this->defaultFeaturePolicyDirectives;
+
+        if (!empty($this->featurePolicyDirectives) && is_array($this->featurePolicyDirectives)) {
+            foreach ($this->featurePolicyDirectives as $directive => $value) {
+                if (isset($this->defaultFeaturePolicyDirectives[$directive])) {
+                    $feature_directives[$directive] = $value;
+                }
+            }
+        }
+
+        return array_merge($this->defaultFeaturePolicyDirectives, $feature_directives);
+    }
+
+    /**
+     * Get feature policy directives
+     *
+     * @access private
+     * @return string
+     */
+    private function getFeaturePolicyDirectives()
+    {
+        $result = '';
+        $directives = $this->buildFuturePolicyArray();
+
+        foreach ($directives as $directive => $value) {
+            $result .= $directive . ' ' . $value . '; ';
+        }
+
+        return trim($result, '; ');
+    }
+
+    /**
      * Get content security policy directives
      *
      * @access private
@@ -291,5 +380,26 @@ class Headers extends Component implements BootstrapInterface
         }
 
         return trim($result, '; ');
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    private function isValidReferrerPolicyValue($value)
+    {
+        $allowed_values = [
+            "",
+            "no-referrer",
+            "no-referrer-when-downgrade",
+            "same-origin",
+            "origin",
+            "strict-origin",
+            "origin-when-cross-origin",
+            "strict-origin-when-cross-origin",
+            "unsafe-url"
+        ];
+
+        return in_array($value, $allowed_values);
     }
 }
