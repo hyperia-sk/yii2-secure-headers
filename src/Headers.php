@@ -245,7 +245,7 @@ class Headers extends Component implements BootstrapInterface
     {
         $report = '';
         if (!empty($this->reportUri)) {
-            $report = ' report=' . $this->reportUri . '/';
+            $report = ' report=' . $this->reportUri . '/r/d/xss/enforce';
         }
 
         return $report;
@@ -262,7 +262,7 @@ class Headers extends Component implements BootstrapInterface
         $report = [];
         if (!empty($this->reportUri)) {
             $report = [
-                'report-uri' => $this->reportUri . '/r/default/csp/enforce'
+                'report-uri' => $this->reportUri . '/r/d/csp/enforce'
             ];
         }
 
@@ -306,7 +306,7 @@ class Headers extends Component implements BootstrapInterface
     {
         $csp_directives = $this->defaultCspDirectives;
 
-        if (!empty($this->cspDirectives) && is_array($this->cspDirectives)) {
+        if (is_array($this->cspDirectives)) {
             foreach ($this->cspDirectives as $directive => $value) {
                 if (isset($this->defaultCspDirectives[$directive])) {
                     $csp_directives[$directive] = $value;
@@ -327,7 +327,7 @@ class Headers extends Component implements BootstrapInterface
     {
         $feature_directives = $this->defaultFeaturePolicyDirectives;
 
-        if (!empty($this->featurePolicyDirectives) && is_array($this->featurePolicyDirectives)) {
+        if (is_array($this->featurePolicyDirectives)) {
             foreach ($this->featurePolicyDirectives as $directive => $value) {
                 if (isset($this->defaultFeaturePolicyDirectives[$directive])) {
                     $feature_directives[$directive] = $value;

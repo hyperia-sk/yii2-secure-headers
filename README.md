@@ -44,7 +44,7 @@ to the require section of your composer.json.
         'xPoweredBy' => 'Hyperia',
         'referrerPolicy' => 'no-referrer',
         'publicKeyPins' => '',
-        'reportUri' => 'https://company.report-uri.io',
+        'reportUri' => 'https://company.report-uri.com',
         'cspDirectives' => [
             'script-src' => "'self' 'unsafe-inline'",
             'style-src' => "'self' 'unsafe-inline'",
