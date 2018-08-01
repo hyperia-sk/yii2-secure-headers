@@ -117,7 +117,7 @@ class Headers extends Component implements BootstrapInterface
      * @access public
      * @var string
      */
-    public $referrerPolicy = '';
+    public $referrerPolicy = 'no-referrer-when-downgrade';
 
     /**
      * X-Content-Type-Options
