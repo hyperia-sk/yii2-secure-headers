@@ -53,7 +53,7 @@ class HeaderTest extends TestCase
         $defaultHeaders = Yii::$app->response->getHeaders();
         
         $this->assertNotEmpty($defaultHeaders);
-        $this->assertCount(6, $defaultHeaders);
+        $this->assertCount(8, $defaultHeaders);
         $this->assertArrayHasKey($a, $defaultHeaders);
         $this->assertContains($b, $defaultHeaders[$a]);
     }
