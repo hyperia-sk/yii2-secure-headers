@@ -42,8 +42,9 @@ to the require section of your composer.json.
         'stsMaxAge' => 10,
         'xFrameOptions' => 'DENY',
         'xPoweredBy' => 'Hyperia',
+        'referrerPolicy' => 'no-referrer',
         'publicKeyPins' => '',
-        'reportUri' => 'https://company.report-uri.io',
+        'reportUri' => 'https://company.report-uri.com',
         'cspDirectives' => [
             'script-src' => "'self' 'unsafe-inline'",
             'style-src' => "'self' 'unsafe-inline'",
@@ -56,6 +57,24 @@ to the require section of your composer.json.
             'frame-src' => "'self'",
             'child-src' => "'self'",
             'worker-src' => "'self'"
+        ],
+        'featurePolicyDirectives' => [
+            'accelerometer' => "'self'",
+            'ambient-light-sensor' => "'self'",
+            'autoplay' => "'self'",
+            'camera' => "'self'",
+            'encrypted-media' => "'self'",
+            'fullscreen' => "'self'",
+            'geolocation' => "'self'",
+            'gyroscope' => "'self'",
+            'magnetometer' => "'self'",
+            'microphone' => "'self'",
+            'midi' => "'self'",
+            'payment' => "'self'",
+            'picture-in-picture' => "*",
+            'speaker' => "'self'",
+            'usb' => "'self'",
+            'vr' => "'self'"
         ]
     ]
 ]
@@ -93,6 +112,9 @@ If you want to disable csp header, set custom-csp to empty string.
 #### Subresource Integrity
 
 If you want to require subresource integrity for style and script sources set `requireSriForStyle` and `requireSriForScript` to `true`
+
+#### Feature Policy
+Feature Policy is being created to allow site owners to enable and disable certain web platform features on their own pages and those they embed. Use same directives as for CSP
 
 #### Additional Resources
 
