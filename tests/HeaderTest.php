@@ -11,6 +11,9 @@ use hyperia\security\Headers;
  */
 class HeaderTest extends TestCase
 {
+    /**
+     * @var Headers
+     */
     private $headers;
 
     /**
@@ -214,5 +217,27 @@ class HeaderTest extends TestCase
 
         $this->assertNotEmpty($csp);
         $this->assertNotContains('X-Content-Type-Options', $csp);
+    }
+
+    /**
+     * Test enabled public key pins
+     */
+    public function testPublicKeyPins()
+    {
+        $this->headers->publicKeyPins = 123;
+        $csp = $this->invokeMethod($this->headers, 'getContentSecurityPolicyDirectives');
+
+        $this->assertNotEmpty($csp);
+        $this->assertNotContains('Public-Key-Pins', $csp);
+    }
+
+    /**
+     * Test XSS protection URI part
+     */
+    public function testXssProtectionUriPart()
+    {
+        $this->headers->reportUri = 'https://companyname.report-uri.io';
+        $report = $this->invokeMethod($this->headers, 'getXssProtectionReportPart');
+        $this->assertSame(' report=https://companyname.report-uri.io/r/d/xss/enforce', $report);
     }
 }
