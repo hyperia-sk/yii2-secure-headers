@@ -56,7 +56,8 @@ to the require section of your composer.json.
             'form-action' => "'self'",
             'frame-src' => "'self'",
             'child-src' => "'self'",
-            'worker-src' => "'self'"
+            'worker-src' => "'self'",
+            'manifest-src' => "'self'",
         ],
         'featurePolicyDirectives' => [
             'accelerometer' => "'self'",
