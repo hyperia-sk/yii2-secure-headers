@@ -22,13 +22,13 @@ class HeaderTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        
+
         // run web application
         $this->mockApplication(require(__DIR__ . '/config/config.php'), 'yii\web\Application');
-        
+
         // trigger event
         Yii::$app->trigger(Application::EVENT_BEFORE_REQUEST);
-        
+
         // init extension
         $this->headers = new Headers();
     }
@@ -47,20 +47,20 @@ class HeaderTest extends TestCase
             ['x-xss-protection', '1; mode=block;']
         ];
     }
-    
+
     /**
      * @dataProvider defaultHeaders
      */
     public function testHeaders($a, $b)
     {
         $defaultHeaders = Yii::$app->response->getHeaders();
-        
+
         $this->assertNotEmpty($defaultHeaders);
         $this->assertCount(8, $defaultHeaders);
         $this->assertArrayHasKey($a, $defaultHeaders);
         $this->assertContains($b, $defaultHeaders[$a]);
     }
-    
+
     /**
      * Test report uri header
      */
@@ -166,6 +166,7 @@ class HeaderTest extends TestCase
         $this->assertContains('default-src', $csp);
         $this->assertContains('script-src', $csp);
         $this->assertContains('worker-src', $csp);
+        $this->assertContains('manifest-src', $csp);
         $this->assertNotContains('require-sri-for', $csp);
         $this->assertContains('block-all-mixed-content', $csp);
         $this->assertContains('upgrade-insecure-requests', $csp);
@@ -217,6 +218,15 @@ class HeaderTest extends TestCase
 
         $this->assertNotEmpty($csp);
         $this->assertNotContains('X-Content-Type-Options', $csp);
+    }
+
+    public function testBuildCspArrayWithOverwriteManifestSrc()
+    {
+        $domain = 'https://example.com/';
+        $this->headers->cspDirectives = ['manifest-src' => $domain];
+        $csp = $this->invokeMethod($this->headers, 'buildCspArray');
+        $this->assertArrayHasKey('manifest-src', $csp);
+        $this->assertEquals($domain, $csp['manifest-src']);
     }
 
     /**
