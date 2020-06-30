@@ -2,6 +2,14 @@
 
 namespace hyperia\security;
 
+use hyperia\security\headers\ContentSecurityPolicy;
+use hyperia\security\headers\FeaturePolicy;
+use hyperia\security\headers\ReferrerPolicy;
+use hyperia\security\headers\StrictTransportSecurity;
+use hyperia\security\headers\XContentTypeOptions;
+use hyperia\security\headers\XFrameOptions;
+use hyperia\security\headers\XPoweredBy;
+use hyperia\security\headers\XssProtection;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Application;
@@ -14,7 +22,6 @@ use yii\base\Component;
  */
 class Headers extends Component implements BootstrapInterface
 {
-
     /**
      * Insecure request
      *
@@ -35,9 +42,9 @@ class Headers extends Component implements BootstrapInterface
      * Strict Transport Security
      *
      * @access public
-     * @var integer
+     * @var array
      */
-    public $stsMaxAge = '';
+    public $strictTransportSecurity = [];
 
     /**
      * X Frame Options
@@ -80,14 +87,6 @@ class Headers extends Component implements BootstrapInterface
     public $reportUri = '';
 
     /**
-     * Public Key Pins
-     *
-     * @access public
-     * @var string
-     */
-    public $publicKeyPins = '';
-
-    /**
      * Require Subresource Integrity for script
      *
      * @access public
@@ -128,63 +127,6 @@ class Headers extends Component implements BootstrapInterface
     public $contentTypeOptions = true;
 
     /**
-     * Default Content Security Policy directives
-     *
-     * @access private
-     * @var array
-     */
-    private $defaultCspDirectives = [
-        'script-src' => "'self' 'unsafe-inline'",
-        'style-src' => "'self' 'unsafe-inline'",
-        'img-src' => "'self' data:",
-        'connect-src' => "'self'",
-        'font-src' => "'self'",
-        'object-src' => "'self'",
-        'media-src' => "'self'",
-        'form-action' => "'self'",
-        'frame-src' => "'self'",
-        'child-src' => "'self'",
-        'worker-src' => "'self'",
-        'manifest-src' => "'self'",
-    ];
-
-    /**
-     * Default Feature Policy directives
-     *
-     * @access private
-     * @var array
-     */
-    private $defaultFeaturePolicyDirectives = [
-        'accelerometer' => "'self'",
-        'ambient-light-sensor' => "'self'",
-        'autoplay' => "'self'",
-        'camera' => "'self'",
-        'encrypted-media' => "'self'",
-        'fullscreen' => "'self'",
-        'geolocation' => "'self'",
-        'gyroscope' => "'self'",
-        'magnetometer' => "'self'",
-        'microphone' => "'self'",
-        'midi' => "'self'",
-        'payment' => "'self'",
-        'picture-in-picture' => "*",
-        'speaker' => "'self'",
-        'usb' => "'self'",
-        'vr' => "'self'"
-    ];
-
-    /**
-     * Default Content Security Policy
-     *
-     * @access private
-     * @var array
-     */
-    private $defaultCsp = [
-        'default-src' => "'none'"
-    ];
-
-
-    /**
      * Bootstrap (set up before request event)
      *
      * @access public
@@ -197,210 +139,28 @@ class Headers extends Component implements BootstrapInterface
             if (is_a(Yii::$app, 'yii\web\Application')) {
                 $headers = Yii::$app->response->headers;
 
-                $headers->set('X-Powered-By', $this->xPoweredBy);
+                $headerPolicy = [
+                    new XPoweredBy($this->xPoweredBy),
+                    new XFrameOptions($this->xFrameOptions),
+                    new XContentTypeOptions($this->contentTypeOptions),
+                    new StrictTransportSecurity($this->strictTransportSecurity),
+                    new FeaturePolicy($this->featurePolicyDirectives),
+                    new ReferrerPolicy($this->referrerPolicy),
+                    new XssProtection($this->xssProtection, $this->reportUri),
+                    new ContentSecurityPolicy($this->cspDirectives, [
+                        'requireSriForScript' => $this->requireSriForScript,
+                        'requireSriForStyle' => $this->requireSriForStyle,
+                        'blockAllMixedContent' => $this->blockAllMixedContent,
+                        'upgradeInsecureRequests' => $this->upgradeInsecureRequests,
+                    ], $this->reportUri)
+                ];
 
-                if (!empty($this->xFrameOptions)) {
-                    $headers->set('X-Frame-Options', $this->xFrameOptions);
-                }
-
-                $content_security_policy = $this->getContentSecurityPolicyDirectives();
-                if (!empty($content_security_policy)) {
-                    $headers->set('Content-Security-Policy', $content_security_policy);
-                }
-
-                $feature_policy = $this->getFeaturePolicyDirectives();
-                if (!empty($feature_policy)) {
-                    $headers->set('Feature-Policy', $feature_policy);
-                }
-
-                if (!empty($this->stsMaxAge)) {
-                    $headers->set('Strict-Transport-Security', 'max-age=' . $this->stsMaxAge . ';');
-                }
-
-                if ($this->contentTypeOptions) {
-                    $headers->set('X-Content-Type-Options', 'nosniff');
-                }
-
-                if ($this->xssProtection) {
-                    $headers->set('X-XSS-Protection', '1; mode=block;' . $this->getXssProtectionReportPart());
-                }
-
-                if (!empty($this->publicKeyPins)) {
-                    $headers->set('Public-Key-Pins', $this->publicKeyPins);
-                }
-
-                if ($this->isValidReferrerPolicyValue($this->referrerPolicy)) {
-                    $headers->set('Referrer-Policy', $this->referrerPolicy);
+                foreach ($headerPolicy as $policy) {
+                    if ($policy->isValid()) {
+                        $headers->set($policy->getName(), $policy->getValue());
+                    }
                 }
             }
         });
-    }
-
-    /**
-     * Get report part for X-XSS-Protection header
-     *
-     * @access private
-     * @return string
-     */
-    private function getXssProtectionReportPart()
-    {
-        $report = '';
-        if (!empty($this->reportUri)) {
-            $report = ' report=' . $this->reportUri . '/r/d/xss/enforce';
-        }
-
-        return $report;
-    }
-
-    /**
-     * CSP report uri
-     *
-     * @access private
-     * @return array
-     */
-    private function getCspReportUri()
-    {
-        $report = [];
-        if (!empty($this->reportUri)) {
-            $report = [
-                'report-uri' => $this->reportUri . '/r/d/csp/enforce'
-            ];
-        }
-
-        return $report;
-    }
-
-    /**
-     * CSP subresource integrity
-     *
-     * @access private
-     * @return array
-     */
-    private function getCspSubresourceIntegrity()
-    {
-        $result = [];
-
-        if ($this->requireSriForScript) {
-            $values[] = 'script';
-        }
-
-        if ($this->requireSriForStyle) {
-            $values[] = 'style';
-        }
-
-        if (!empty($values)) {
-            $result = [
-                'require-sri-for' => implode(' ', $values)
-            ];
-        }
-
-        return $result;
-    }
-
-    /**
-     * Build array with directive as key and parameter as value
-     *
-     * @access private
-     * @return array
-     */
-    private function buildCspArray()
-    {
-        $csp_directives = $this->defaultCspDirectives;
-
-        if (is_array($this->cspDirectives)) {
-            foreach ($this->cspDirectives as $directive => $value) {
-                if (isset($this->defaultCspDirectives[$directive])) {
-                    $csp_directives[$directive] = $value;
-                }
-            }
-        }
-
-        return array_merge($this->defaultCsp, $csp_directives, $this->getCspSubresourceIntegrity(), $this->getCspReportUri());
-    }
-
-    /**
-     * Build array with directive as key and parameter as value
-     *
-     * @access private
-     * @return array
-     */
-    private function buildFuturePolicyArray()
-    {
-        $feature_directives = $this->defaultFeaturePolicyDirectives;
-
-        if (is_array($this->featurePolicyDirectives)) {
-            foreach ($this->featurePolicyDirectives as $directive => $value) {
-                if (isset($this->defaultFeaturePolicyDirectives[$directive])) {
-                    $feature_directives[$directive] = $value;
-                }
-            }
-        }
-
-        return array_merge($this->defaultFeaturePolicyDirectives, $feature_directives);
-    }
-
-    /**
-     * Get feature policy directives
-     *
-     * @access private
-     * @return string
-     */
-    private function getFeaturePolicyDirectives()
-    {
-        $result = '';
-        $directives = $this->buildFuturePolicyArray();
-
-        foreach ($directives as $directive => $value) {
-            $result .= $directive . ' ' . $value . '; ';
-        }
-
-        return trim($result, '; ');
-    }
-
-    /**
-     * Get content security policy directives
-     *
-     * @access private
-     * @return string
-     */
-    private function getContentSecurityPolicyDirectives()
-    {
-        $result = '';
-        $csp_directives = $this->buildCspArray();
-
-        foreach ($csp_directives as $directive => $value) {
-            $result .= $directive . ' ' . $value . '; ';
-        }
-
-        if ($this->blockAllMixedContent) {
-            $result .= 'block-all-mixed-content; ';
-        }
-
-        if ($this->upgradeInsecureRequests) {
-            $result .= 'upgrade-insecure-requests; ';
-        }
-
-        return trim($result, '; ');
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    private function isValidReferrerPolicyValue($value)
-    {
-        $allowed_values = [
-            "",
-            "no-referrer",
-            "no-referrer-when-downgrade",
-            "same-origin",
-            "origin",
-            "strict-origin",
-            "origin-when-cross-origin",
-            "strict-origin-when-cross-origin",
-            "unsafe-url"
-        ];
-
-        return in_array($value, $allowed_values);
     }
 }

@@ -18,11 +18,12 @@
         }
     ],
     "require": {
+        "php": "^7.2",
         "yiisoft/yii2": "*"
     },
     "require-dev": {
         "symfony/var-dumper": "*",
-        "phpunit/phpunit": "^5.7"
+        "phpunit/phpunit": "*"
     },
     "autoload": {
         "psr-4": {
@@ -33,5 +34,12 @@
         "psr-4": {
             "hyperia\\security\\tests\\": "tests/"
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }
