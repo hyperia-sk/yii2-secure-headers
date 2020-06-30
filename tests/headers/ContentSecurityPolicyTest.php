@@ -55,17 +55,17 @@ class ContentSecurityPolicyTest extends TestCase
         $this->assertFalse($policy->isValid());
     }
 
-    public function testWithoutSubresourceIntegrityAndReport()
+    public function testWithSubresourceIntegrity()
     {
         $policy = new ContentSecurityPolicy([
             'object-src' => "'self'",
             'media-src' => "'self'",
             'form-action' => "'self'"
         ], [
-            'requireSriForScript' => false,
+            'requireSriForScript' => true,
             'requireSriForStyle' => true
         ], 'https://www.example.com');
 
-        $this->assertSame("default-src 'none'; connect-src 'self'; font-src 'self'; frame-src 'self'; img-src 'self' data:; manifest-src 'self'; object-src 'self'; prefetch-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src 'self'; form-action 'self'; worker-src 'self'; require-sri-for style; report-uri https://www.example.com/r/d/csp/enforce", $policy->getValue());
+        $this->assertSame("default-src 'none'; connect-src 'self'; font-src 'self'; frame-src 'self'; img-src 'self' data:; manifest-src 'self'; object-src 'self'; prefetch-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src 'self'; form-action 'self'; worker-src 'self'; require-sri-for script style; report-uri https://www.example.com/r/d/csp/enforce", $policy->getValue());
     }
 }
