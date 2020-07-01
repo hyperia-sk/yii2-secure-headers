@@ -18,7 +18,6 @@ class FeaturePolicy implements PolicyInterface
         'geolocation' => "'self'",
         'gyroscope' => "'self'",
         'layout-animations' => "'self'",
-        'legacy-image-format' => "'self'",
         'magnetometer' => "'self'",
         'microphone' => "'self'",
         'midi' => "'self'",
