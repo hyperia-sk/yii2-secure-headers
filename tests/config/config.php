@@ -12,21 +12,22 @@ return [
             'class' => '\hyperia\security\Headers',
             'upgradeInsecureRequests' => true,
             'blockAllMixedContent' => true,
-            'stsMaxAge' => 10,
+            'strictTransportSecurity' => [
+                'max-age' => 10,
+                'includeSubDomains' => true
+            ],
             'xFrameOptions' => 'DENY',
             'xPoweredBy' => 'Hyperia',
-            'publicKeyPins' => '',
             'cspDirectives' => [
                 'script-src' => "'self' 'unsafe-inline'",
+                'connect-src' => "'self'",
                 'style-src' => "'self' 'unsafe-inline'",
                 'img-src' => "'self' data:",
-                'connect-src' => "'self'",
                 'font-src' => "'self'",
                 'object-src' => "'self'",
                 'media-src' => "'self'",
                 'form-action' => "'self'",
                 'frame-src' => "'self'",
-                'child-src' => "'self'"
             ]
         ]
     ]

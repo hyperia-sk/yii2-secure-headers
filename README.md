@@ -14,13 +14,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```shell
-composer require hyperia/yii2-secure-headers:"^1.0"
+composer require hyperia/yii2-secure-headers:"^2.0"
 ```
 
 or add
 
 ```
-"hyperia/yii2-secure-headers": "^1.0"
+"hyperia/yii2-secure-headers": "^2.0"
 ```
 
 to the require section of your composer.json.
@@ -39,43 +39,54 @@ to the require section of your composer.json.
         'requireSriForStyle' => false,
         'xssProtection' => true,
         'contentTypeOptions' => true,
-        'stsMaxAge' => 10,
+        'strictTransportSecurity' => [
+            'max-age' => 10,
+            'includeSubDomains' => true,
+            'preload' => false
+        ],
         'xFrameOptions' => 'DENY',
         'xPoweredBy' => 'Hyperia',
         'referrerPolicy' => 'no-referrer',
-        'publicKeyPins' => '',
         'reportUri' => 'https://company.report-uri.com',
         'cspDirectives' => [
-            'script-src' => "'self' 'unsafe-inline'",
-            'style-src' => "'self' 'unsafe-inline'",
-            'img-src' => "'self' data:",
             'connect-src' => "'self'",
             'font-src' => "'self'",
+            'frame-src' => "'self'",
+            'img-src' => "'self' data:",
+            'manifest-src' => "'self'",
             'object-src' => "'self'",
+            'prefetch-src' => "'self'",
+            'script-src' => "'self' 'unsafe-inline'",
+            'style-src' => "'self' 'unsafe-inline'",
             'media-src' => "'self'",
             'form-action' => "'self'",
-            'frame-src' => "'self'",
-            'child-src' => "'self'",
             'worker-src' => "'self'",
-            'manifest-src' => "'self'",
         ],
         'featurePolicyDirectives' => [
             'accelerometer' => "'self'",
             'ambient-light-sensor' => "'self'",
             'autoplay' => "'self'",
+            'battery' => "'self'",
             'camera' => "'self'",
+            'display-capture' => "'self'",
+            'document-domain' => "'self'",
             'encrypted-media' => "'self'",
             'fullscreen' => "'self'",
             'geolocation' => "'self'",
             'gyroscope' => "'self'",
+            'layout-animations' => "'self'",
+            'legacy-image-format' => "'self'",
             'magnetometer' => "'self'",
             'microphone' => "'self'",
             'midi' => "'self'",
+            'oversized-images' => "'self'",
             'payment' => "'self'",
             'picture-in-picture' => "*",
-            'speaker' => "'self'",
+            'publickey-credentials-get' => "'self'",
+            'sync-xhr' => "'self'",
             'usb' => "'self'",
-            'vr' => "'self'"
+            'wake-lock' => "'self'",
+            'xr-spatial-tracking' => "'self'"
         ]
     ]
 ]
@@ -100,10 +111,6 @@ to the require section of your composer.json.
 
 Each header has a reference link in config file, you should read it if you do not know the header. 
 If you want to disable a string type header, just set to null or empty string.
-
-#### Public Key Pinning
-
-When hashes is empty array, this header will not add to http response.
 
 #### Content Security Policy
 
