@@ -22,7 +22,7 @@ class FeaturePolicyTest extends TestCase
 
     public function testGetValue(): void
     {
-        $this->assertSame("accelerometer 'self'; ambient-light-sensor 'self'; autoplay 'self'; battery 'self'; camera 'self'; display-capture 'self'; document-domain 'self'; encrypted-media 'self'; fullscreen 'self'; geolocation 'self'; gyroscope 'self'; layout-animations 'self'; legacy-image-format 'self'; magnetometer 'self'; microphone 'self'; midi 'self'; oversized-images 'self'; payment *; picture-in-picture 'none'; publickey-credentials-get 'self'; sync-xhr 'self'; usb 'self'; wake-lock 'self'; xr-spatial-tracking 'self'", $this->header->getValue());
+        $this->assertSame("accelerometer 'self'; ambient-light-sensor 'self'; autoplay 'self'; battery 'self'; camera 'self'; display-capture 'self'; document-domain 'self'; encrypted-media 'self'; fullscreen 'self'; geolocation 'self'; gyroscope 'self'; layout-animations 'self'; magnetometer 'self'; microphone 'self'; midi 'self'; oversized-images 'self'; payment *; picture-in-picture 'none'; publickey-credentials-get 'self'; sync-xhr 'self'; usb 'self'; wake-lock 'self'; xr-spatial-tracking 'self'", $this->header->getValue());
     }
 
     public function testGetName(): void
