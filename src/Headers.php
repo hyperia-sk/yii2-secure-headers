@@ -156,7 +156,7 @@ class Headers extends Component implements BootstrapInterface
                 ];
 
                 foreach ($headerPolicy as $policy) {
-                    if ($policy->isValid()) {
+                    if ($policy->isValid() && !$headers->has($policy->getName())) {
                         $headers->set($policy->getName(), $policy->getValue());
                     }
                 }
