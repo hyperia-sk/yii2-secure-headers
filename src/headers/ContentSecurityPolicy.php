@@ -66,7 +66,7 @@ class ContentSecurityPolicy implements PolicyInterface
 
     public function isValid(): bool
     {
-        $allowedDirectives = array_keys($this->defaultDirectives);
+        $allowedDirectives = array_keys(array_merge($this->defaultDirectives, $this->defaultCsp));
         foreach ($this->directives as $directive => $value) {
             if (!in_array($directive, $allowedDirectives) && !empty($value)) {
                 return false;
