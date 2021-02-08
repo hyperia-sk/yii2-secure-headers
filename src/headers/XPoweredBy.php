@@ -23,6 +23,6 @@ class XPoweredBy implements PolicyInterface
 
     public function isValid(): bool
     {
-        return true;
+        return !empty($this->value);
     }
 }

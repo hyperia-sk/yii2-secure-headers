@@ -76,7 +76,7 @@ class Headers extends Component implements BootstrapInterface
      * @access public
      * @var string
      */
-    public $xPoweredBy = 'Hyperia';
+    public $xPoweredBy = '';
 
     /**
      * Report URI
