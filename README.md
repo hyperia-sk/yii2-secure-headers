@@ -49,6 +49,19 @@ to the require section of your composer.json.
         'referrerPolicy' => 'no-referrer',
         'reportOnlyMode' => false
         'reportUri' => 'https://company.report-uri.com/r/d/csp/enforce',
+        'reportTo' => [
+            [
+                'group' => 'groupName',
+                'max_age' => 10886400,
+                'endpoints' => [
+                    [
+                        'name' => 'endpointName'
+                        'url' => 'https://example.com',
+                        'failures' => 1
+                    ]
+                ]
+            ]
+        ]
         'cspDirectives' => [
             'connect-src' => "'self'",
             'font-src' => "'self'",
@@ -62,6 +75,7 @@ to the require section of your composer.json.
             'media-src' => "'self'",
             'form-action' => "'self'",
             'worker-src' => "'self'",
+            'report-to' => 'groupname'
         ],
         'featurePolicyDirectives' => [
             'accelerometer' => "'self'",

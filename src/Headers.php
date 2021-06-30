@@ -10,6 +10,7 @@ use hyperia\security\headers\XContentTypeOptions;
 use hyperia\security\headers\XFrameOptions;
 use hyperia\security\headers\XPoweredBy;
 use hyperia\security\headers\XssProtection;
+use hyperia\security\headers\ReportTo;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Application;
@@ -135,6 +136,14 @@ class Headers extends Component implements BootstrapInterface
     public $reportOnlyMode = false;
 
     /**
+     * Report To policy
+     *
+     * @access public
+     * @var array
+     */
+    public $reportTo = [];
+
+    /**
      * Bootstrap (set up before request event)
      *
      * @access public
@@ -155,6 +164,7 @@ class Headers extends Component implements BootstrapInterface
                     new FeaturePolicy($this->featurePolicyDirectives),
                     new ReferrerPolicy($this->referrerPolicy),
                     new XssProtection($this->xssProtection, $this->reportUri),
+                    new ReportTo($this->reportTo),
                     new ContentSecurityPolicy($this->cspDirectives, [
                         'requireSriForScript' => $this->requireSriForScript,
                         'requireSriForStyle' => $this->requireSriForStyle,
