@@ -32,7 +32,7 @@ class XssProtection implements PolicyInterface
     {
         $report = '';
         if (!empty($this->reportUri)) {
-            $report = ' report=' . $this->reportUri . '/r/d/xss/enforce';
+            $report = ' report=' . $this->reportUri;
         }
 
         return $report;
