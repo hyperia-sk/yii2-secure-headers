@@ -55,13 +55,6 @@ class FeaturePolicy implements PolicyInterface
 
     public function isValid(): bool
     {
-        $allowedDirectives = array_keys($this->defaultDirectives);
-        foreach ($this->directives as $directive => $value) {
-            if (!in_array($directive, $allowedDirectives) && !empty($value)) {
-                return false;
-            }
-        }
-
         return true;
     }
 }
