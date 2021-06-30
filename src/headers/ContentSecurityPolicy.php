@@ -10,6 +10,7 @@ class ContentSecurityPolicy implements PolicyInterface
     private $requireSriForStyle;
     private $blockAllMixedContent;
     private $upgradeInsecureRequests;
+    private $reportOnlyMode;
     private $defaultDirectives = [
         'connect-src' => "'self'",
         'font-src' => "'self'",
@@ -37,11 +38,12 @@ class ContentSecurityPolicy implements PolicyInterface
         $this->requireSriForStyle = $params['requireSriForStyle'] ?? false;
         $this->blockAllMixedContent = $params['blockAllMixedContent'] ?? false;
         $this->upgradeInsecureRequests = $params['upgradeInsecureRequests'] ?? false;
+        $this->reportOnlyMode = $params['reportOnlyMode'] ?? false;
     }
 
     public function getName(): string
     {
-        return 'Content-Security-Policy';
+        return $this->reportOnlyMode ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy';
     }
 
     public function getValue(): string
@@ -66,13 +68,6 @@ class ContentSecurityPolicy implements PolicyInterface
 
     public function isValid(): bool
     {
-        $allowedDirectives = array_keys(array_merge($this->defaultDirectives, $this->defaultCsp));
-        foreach ($this->directives as $directive => $value) {
-            if (!in_array($directive, $allowedDirectives) && !empty($value)) {
-                return false;
-            }
-        }
-
         return true;
     }
 

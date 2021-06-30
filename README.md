@@ -47,6 +47,7 @@ to the require section of your composer.json.
         'xFrameOptions' => 'DENY',
         'xPoweredBy' => 'Hyperia',
         'referrerPolicy' => 'no-referrer',
+        'reportOnlyMode' => false
         'reportUri' => 'https://company.report-uri.com',
         'cspDirectives' => [
             'connect-src' => "'self'",

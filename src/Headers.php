@@ -127,6 +127,14 @@ class Headers extends Component implements BootstrapInterface
     public $contentTypeOptions = true;
 
     /**
+     * Content-Security-Policy-Report-Only
+     *
+     * @access public
+     * @var boolean
+     */
+    public $reportOnlyMode = false;
+
+    /**
      * Bootstrap (set up before request event)
      *
      * @access public
@@ -152,6 +160,7 @@ class Headers extends Component implements BootstrapInterface
                         'requireSriForStyle' => $this->requireSriForStyle,
                         'blockAllMixedContent' => $this->blockAllMixedContent,
                         'upgradeInsecureRequests' => $this->upgradeInsecureRequests,
+                        'reportOnlyMode' => $this->reportOnlyMode
                     ], $this->reportUri)
                 ];
 

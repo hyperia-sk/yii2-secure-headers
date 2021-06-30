@@ -24,21 +24,6 @@ class ContentSecurityPolicyTest extends TestCase
         $this->assertTrue($policy->isValid());
     }
 
-    public function testInvalid(): void
-    {
-        $policy = new ContentSecurityPolicy([
-            'object-src' => "'self'",
-            'media-src' => "'self'",
-            'form-action' => "'self'",
-            'child-src' => "'self'"
-        ], [
-            'upgradeInsecureRequests' => false,
-            'blockAllMixedContent' => true
-        ], 'https://www.example.com');
-
-        $this->assertFalse($policy->isValid());
-    }
-
     public function testWithSubresourceIntegrity()
     {
         $policy = new ContentSecurityPolicy([
