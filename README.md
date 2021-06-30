@@ -14,13 +14,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```shell
-composer require hyperia/yii2-secure-headers:"^2.0"
+composer require hyperia/yii2-secure-headers:"^3.0"
 ```
 
 or add
 
 ```
-"hyperia/yii2-secure-headers": "^2.0"
+"hyperia/yii2-secure-headers": "^3.0"
 ```
 
 to the require section of your composer.json.
@@ -47,7 +47,21 @@ to the require section of your composer.json.
         'xFrameOptions' => 'DENY',
         'xPoweredBy' => 'Hyperia',
         'referrerPolicy' => 'no-referrer',
-        'reportUri' => 'https://company.report-uri.com',
+        'reportOnlyMode' => false
+        'reportUri' => 'https://company.report-uri.com/r/d/csp/enforce',
+        'reportTo' => [
+            [
+                'group' => 'groupName',
+                'max_age' => 10886400,
+                'endpoints' => [
+                    [
+                        'name' => 'endpointName',
+                        'url' => 'https://example.com',
+                        'failures' => 1
+                    ]
+                ]
+            ]
+        ]
         'cspDirectives' => [
             'connect-src' => "'self'",
             'font-src' => "'self'",
@@ -61,6 +75,7 @@ to the require section of your composer.json.
             'media-src' => "'self'",
             'form-action' => "'self'",
             'worker-src' => "'self'",
+            'report-to' => 'groupname'
         ],
         'featurePolicyDirectives' => [
             'accelerometer' => "'self'",

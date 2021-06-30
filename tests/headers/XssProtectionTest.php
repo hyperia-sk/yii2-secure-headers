@@ -14,7 +14,7 @@ class XssProtectionTest extends TestCase
 
     public function setUp(): void
     {
-        $this->header = new XssProtection(true, 'example.com');
+        $this->header = new XssProtection(true, 'example.com/r/d/xss/enforce');
     }
 
     public function testGetValue(): void
