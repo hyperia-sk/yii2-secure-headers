@@ -48,7 +48,7 @@ to the require section of your composer.json.
         'xPoweredBy' => 'Hyperia',
         'referrerPolicy' => 'no-referrer',
         'reportOnlyMode' => false
-        'reportUri' => 'https://company.report-uri.com',
+        'reportUri' => 'https://company.report-uri.com/r/d/csp/enforce',
         'cspDirectives' => [
             'connect-src' => "'self'",
             'font-src' => "'self'",

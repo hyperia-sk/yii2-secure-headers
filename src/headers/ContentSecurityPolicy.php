@@ -76,7 +76,7 @@ class ContentSecurityPolicy implements PolicyInterface
         $report = [];
         if (!empty($this->reportUri)) {
             $report = [
-                'report-uri' => $this->reportUri . '/r/d/csp/enforce'
+                'report-uri' => $this->reportUri
             ];
         }
 
