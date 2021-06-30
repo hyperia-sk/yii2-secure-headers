@@ -55,7 +55,7 @@ to the require section of your composer.json.
                 'max_age' => 10886400,
                 'endpoints' => [
                     [
-                        'name' => 'endpointName'
+                        'name' => 'endpointName',
                         'url' => 'https://example.com',
                         'failures' => 1
                     ]
