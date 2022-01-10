@@ -11,6 +11,7 @@ use hyperia\security\headers\XFrameOptions;
 use hyperia\security\headers\XPoweredBy;
 use hyperia\security\headers\XssProtection;
 use hyperia\security\headers\ReportTo;
+use hyperia\security\headers\PermissionsPolicy;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Application;
@@ -64,12 +65,20 @@ class Headers extends Component implements BootstrapInterface
     public $cspDirectives = [];
 
     /**
-     * Content Security Policy directive
+     * Feature Policy directive
      *
      * @access public
      * @var array
      */
     public $featurePolicyDirectives = [];
+
+    /**
+     * Permissions Policy directive
+     *
+     * @access public
+     * @var array
+     */
+    public $permissionsPolicyDirectives = [];
 
     /**
      * Powered By
@@ -162,6 +171,7 @@ class Headers extends Component implements BootstrapInterface
                     new XContentTypeOptions($this->contentTypeOptions),
                     new StrictTransportSecurity($this->strictTransportSecurity),
                     new FeaturePolicy($this->featurePolicyDirectives),
+                    new PermissionsPolicy($this->permissionsPolicyDirectives),
                     new ReferrerPolicy($this->referrerPolicy),
                     new XssProtection($this->xssProtection, $this->reportUri),
                     new ReportTo($this->reportTo),

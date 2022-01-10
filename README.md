@@ -77,6 +77,7 @@ to the require section of your composer.json.
             'worker-src' => "'self'",
             'report-to' => 'groupname'
         ],
+        // Deprecated. Use Permissions Policy instead.
         'featurePolicyDirectives' => [
             'accelerometer' => "'self'",
             'ambient-light-sensor' => "'self'",
@@ -101,6 +102,31 @@ to the require section of your composer.json.
             'usb' => "'self'",
             'wake-lock' => "'self'",
             'xr-spatial-tracking' => "'self'"
+        ],
+        'permissionsPolicyDirectives' => [
+            'accelerometer' => "self",
+            'ambient-light-sensor' => "self",
+            'autoplay' => "self",
+            'battery' => "self",
+            'camera' => "self",
+            'display-capture' => "self",
+            'document-domain' => "self",
+            'encrypted-media' => "self",
+            'fullscreen' => "self",
+            'geolocation' => "self",
+            'gyroscope' => "self",
+            'layout-animations' => "self",
+            'magnetometer' => "self",
+            'microphone' => "self",
+            'midi' => "self",
+            'oversized-images' => "self",
+            'payment' => "self",
+            'picture-in-picture' => "*",
+            'publickey-credentials-get' => "self",
+            'sync-xhr' => "self",
+            'usb' => "self",
+            'wake-lock' => "self",
+            'xr-spatial-tracking' => "self"
         ]
     ]
 ]
@@ -136,7 +162,10 @@ If you want to disable csp header, set custom-csp to empty string.
 If you want to require subresource integrity for style and script sources set `requireSriForStyle` and `requireSriForScript` to `true`
 
 #### Feature Policy
-Feature Policy is being created to allow site owners to enable and disable certain web platform features on their own pages and those they embed. Use same directives as for CSP
+**Deprecated. Use Permissions Policy instead.** Feature Policy is being created to allow site owners to enable and disable certain web platform features on their own pages and those they embed. Use same directives as for CSP
+
+#### Permissions Policy
+Permissions Policy is new policy which will replace Feature Policy
 
 #### Additional Resources
 
