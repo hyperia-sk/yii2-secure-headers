@@ -106,12 +106,14 @@ class ContentSecurityPolicy implements PolicyInterface
 
     private function buildPolicyArray(): array
     {
-        return array_merge(
+        $array = array_merge(
             $this->defaultCsp,
             $this->defaultDirectives,
             $this->directives,
             $this->getCspSubresourceIntegrity(),
             $this->getCspReportUri()
         );
+
+        return array_filter($array);
     }
 }
