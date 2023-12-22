@@ -45,6 +45,7 @@ class FeaturePolicy implements PolicyInterface
     {
         $result = '';
         $directivesArray = array_merge($this->defaultDirectives, $this->directives);
+        $directivesArray = array_filter($directivesArray);
 
         foreach ($directivesArray as $directive => $value) {
             $result .= $directive . ' ' . $value . '; ';
