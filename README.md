@@ -69,7 +69,7 @@ to the require section of your composer.json.
             'img-src' => "'self' data:",
             'manifest-src' => "'self'",
             'object-src' => "'self'",
-            'prefetch-src' => "'self'",
+            'prefetch-src' => false,
             'script-src' => "'self' 'unsafe-inline'",
             'style-src' => "'self' 'unsafe-inline'",
             'media-src' => "'self'",
@@ -146,6 +146,7 @@ to the require section of your composer.json.
 | https:             | img-src https:             | Allows loading resources only over HTTPS on any domain.                                                                                             |
 | 'unsafe-inline'    | script-src 'unsafe-inline' | Allows use of inline source elements such as style attribute, onclick, or script tag bodies (depends on the context of the source it is applied to) |
 | 'unsafe-eval'      | script-src 'unsafe-eval'   | Allows unsafe dynamic code evaluation such as JavaScript eval()                                                                                     |
+| false              | prefetch-src false         | Exclude the property from the directive array to avoid deprecated warning/error from browsers                                                       |
 
 #### Policy
 
