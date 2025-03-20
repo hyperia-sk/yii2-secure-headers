@@ -3,6 +3,7 @@
 namespace hyperia\security;
 
 use hyperia\security\headers\ContentSecurityPolicy;
+use hyperia\security\headers\FeaturePolicy;
 use hyperia\security\headers\ReferrerPolicy;
 use hyperia\security\headers\StrictTransportSecurity;
 use hyperia\security\headers\XContentTypeOptions;
@@ -62,6 +63,14 @@ class Headers extends Component implements BootstrapInterface
      * @var array
      */
     public $cspDirectives = [];
+
+    /**
+     * Feature Policy directive
+     *
+     * @access public
+     * @var array
+     */
+    public $featurePolicyDirectives = [];
 
     /**
      * Permissions Policy directive
@@ -161,6 +170,7 @@ class Headers extends Component implements BootstrapInterface
                     new XFrameOptions($this->xFrameOptions),
                     new XContentTypeOptions($this->contentTypeOptions),
                     new StrictTransportSecurity($this->strictTransportSecurity),
+                    new FeaturePolicy($this->featurePolicyDirectives),
                     new PermissionsPolicy($this->permissionsPolicyDirectives),
                     new ReferrerPolicy($this->referrerPolicy),
                     new XssProtection($this->xssProtection, $this->reportUri),
