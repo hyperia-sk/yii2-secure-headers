@@ -2,21 +2,21 @@
 
 namespace hyperia\security\tests\headers;
 
-use hyperia\security\headers\FeaturePolicy;
+use hyperia\security\headers\PermissionsPolicy;
 use hyperia\security\tests\TestCase;
 
 class PermissionsPolicyTest extends TestCase
 {
     /**
-     * @var FeaturePolicy
+     * @var PermissionsPolicy
      */
     private $header;
 
     public function setUp(): void
     {
-        $this->header = new FeaturePolicy([
+        $this->header = new PermissionsPolicy([
             'payment' => '*',
-            'picture-in-picture' => "'none'"
+            'picture-in-picture' => 'none'
         ]);
     }
 
@@ -33,5 +33,15 @@ class PermissionsPolicyTest extends TestCase
     public function testIsValid(): void
     {
         $this->assertTrue($this->header->isValid());
+    }
+
+    public function testDisabled(): void
+    {
+        $policy = new PermissionsPolicy([
+            'payment' => '*',
+            'picture-in-picture' => 'none'
+        ], false);
+
+        $this->assertFalse($policy->isValid());
     }
 }

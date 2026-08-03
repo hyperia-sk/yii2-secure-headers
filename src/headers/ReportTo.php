@@ -5,10 +5,12 @@ namespace hyperia\security\headers;
 class ReportTo implements PolicyInterface
 {
     private $groups;
+    private $enabled;
 
-    public function __construct(array $groups)
+    public function __construct(array $groups, bool $enabled = true)
     {
         $this->groups = $groups;
+        $this->enabled = $enabled;
     }
 
     public function getName(): string
@@ -23,6 +25,6 @@ class ReportTo implements PolicyInterface
 
     public function isValid(): bool
     {
-        return true;
+        return $this->enabled === true;
     }
 }
