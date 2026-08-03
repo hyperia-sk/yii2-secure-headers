@@ -4,6 +4,7 @@ namespace hyperia\security\headers;
 
 class FeaturePolicy implements PolicyInterface
 {
+    private $enabled;
     private $directives;
     private $defaultDirectives = [
         'accelerometer' => "'self'",
@@ -31,9 +32,10 @@ class FeaturePolicy implements PolicyInterface
         'xr-spatial-tracking' => "'self'"
     ];
 
-    public function __construct(array $directives)
+    public function __construct(array $directives, bool $enabled = true)
     {
         $this->directives = $directives;
+        $this->enabled = $enabled;
     }
 
     public function getName(): string
@@ -56,6 +58,6 @@ class FeaturePolicy implements PolicyInterface
 
     public function isValid(): bool
     {
-        return true;
+        return $this->enabled === true;
     }
 }

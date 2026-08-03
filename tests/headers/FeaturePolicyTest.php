@@ -35,12 +35,12 @@ class FeaturePolicyTest extends TestCase
         $this->assertTrue($this->header->isValid());
     }
 
-    public function testInvalid(): void
+    public function testDisabled(): void
     {
         $policy = new FeaturePolicy([
             'payment' => '*',
-            'vr' => "'none'"
-        ]);
+            'picture-in-picture' => "'none'"
+        ], false);
 
         $this->assertFalse($policy->isValid());
     }

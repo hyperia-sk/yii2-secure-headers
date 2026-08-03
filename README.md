@@ -49,6 +49,8 @@ to the require section of your composer.json.
         'referrerPolicy' => 'no-referrer',
         'reportOnlyMode' => false
         'reportUri' => 'https://company.report-uri.com/r/d/csp/enforce',
+        // set to false to disable the Report-To header entirely
+        'enableReportTo' => true,
         'reportTo' => [
             [
                 'group' => 'groupName',
@@ -78,6 +80,8 @@ to the require section of your composer.json.
             'report-to' => 'groupname'
         ],
         // Deprecated. Use Permissions Policy instead.
+        // set to false to disable the Feature-Policy header entirely
+        'enableFeaturePolicy' => true,
         'featurePolicyDirectives' => [
             'accelerometer' => "'self'",
             'ambient-light-sensor' => "'self'",
@@ -103,6 +107,8 @@ to the require section of your composer.json.
             'wake-lock' => "'self'",
             'xr-spatial-tracking' => "'self'"
         ],
+        // set to false to disable the Permissions-Policy header entirely
+        'enablePermissionsPolicy' => true,
         'permissionsPolicyDirectives' => [
             'accelerometer' => "self",
             'ambient-light-sensor' => "self",
@@ -165,8 +171,15 @@ If you want to require subresource integrity for style and script sources set `r
 #### Feature Policy
 **Deprecated. Use Permissions Policy instead.** Feature Policy is being created to allow site owners to enable and disable certain web platform features on their own pages and those they embed. Use same directives as for CSP
 
+Set `enableFeaturePolicy` to `false` to turn the header off entirely.
+
 #### Permissions Policy
 Permissions Policy is new policy which will replace Feature Policy
+
+Set `enablePermissionsPolicy` to `false` to turn the header off entirely.
+
+#### Report To
+Set `enableReportTo` to `false` to turn the Report-To header off entirely.
 
 #### Additional Resources
 

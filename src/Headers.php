@@ -65,12 +65,28 @@ class Headers extends Component implements BootstrapInterface
     public $cspDirectives = [];
 
     /**
+     * Enable/disable the Feature-Policy header
+     *
+     * @access public
+     * @var boolean
+     */
+    public $enableFeaturePolicy = true;
+
+    /**
      * Feature Policy directive
      *
      * @access public
      * @var array
      */
     public $featurePolicyDirectives = [];
+
+    /**
+     * Enable/disable the Permissions-Policy header
+     *
+     * @access public
+     * @var boolean
+     */
+    public $enablePermissionsPolicy = true;
 
     /**
      * Permissions Policy directive
@@ -145,6 +161,14 @@ class Headers extends Component implements BootstrapInterface
     public $reportOnlyMode = false;
 
     /**
+     * Enable/disable the Report-To header
+     *
+     * @access public
+     * @var boolean
+     */
+    public $enableReportTo = true;
+
+    /**
      * Report To policy
      *
      * @access public
@@ -170,11 +194,11 @@ class Headers extends Component implements BootstrapInterface
                     new XFrameOptions($this->xFrameOptions),
                     new XContentTypeOptions($this->contentTypeOptions),
                     new StrictTransportSecurity($this->strictTransportSecurity),
-                    new FeaturePolicy($this->featurePolicyDirectives),
-                    new PermissionsPolicy($this->permissionsPolicyDirectives),
+                    new FeaturePolicy($this->featurePolicyDirectives, $this->enableFeaturePolicy),
+                    new PermissionsPolicy($this->permissionsPolicyDirectives, $this->enablePermissionsPolicy),
                     new ReferrerPolicy($this->referrerPolicy),
                     new XssProtection($this->xssProtection, $this->reportUri),
-                    new ReportTo($this->reportTo),
+                    new ReportTo($this->reportTo, $this->enableReportTo),
                     new ContentSecurityPolicy($this->cspDirectives, [
                         'requireSriForScript' => $this->requireSriForScript,
                         'requireSriForStyle' => $this->requireSriForStyle,
