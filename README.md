@@ -47,6 +47,8 @@ to the require section of your composer.json.
         'xFrameOptions' => 'DENY',
         'xPoweredBy' => 'Hyperia',
         'referrerPolicy' => 'no-referrer',
+        // unsafe-none | same-origin-allow-popups | same-origin | noopener-allow-popups, empty string = disabled
+        'crossOriginOpenerPolicy' => 'same-origin',
         'reportOnlyMode' => false
         'reportUri' => 'https://company.report-uri.com/r/d/csp/enforce',
         // set to false to disable the Report-To header entirely
@@ -180,6 +182,14 @@ Set `enablePermissionsPolicy` to `false` to turn the header off entirely.
 
 #### Report To
 Set `enableReportTo` to `false` to turn the Report-To header off entirely.
+
+#### Cross-Origin-Opener-Policy
+Isolates your top-level document from cross-origin windows (protects against XS-Leaks / Spectre-like attacks).
+Allowed values: `unsafe-none`, `same-origin-allow-popups`, `same-origin`, `noopener-allow-popups`.
+An optional reporting endpoint can be appended, e.g. `same-origin; report-to="coop-endpoint"`.
+
+The header is disabled by default (empty string), because `same-origin` breaks cross-origin popups
+(e.g. OAuth or payment gateway windows). If you use such popups, consider `same-origin-allow-popups`.
 
 #### Additional Resources
 
