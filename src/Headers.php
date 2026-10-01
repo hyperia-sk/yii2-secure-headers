@@ -3,6 +3,7 @@
 namespace hyperia\security;
 
 use hyperia\security\headers\ContentSecurityPolicy;
+use hyperia\security\headers\CrossOriginOpenerPolicy;
 use hyperia\security\headers\FeaturePolicy;
 use hyperia\security\headers\ReferrerPolicy;
 use hyperia\security\headers\StrictTransportSecurity;
@@ -145,6 +146,16 @@ class Headers extends Component implements BootstrapInterface
     public $referrerPolicy = 'no-referrer-when-downgrade';
 
     /**
+     * Cross-Origin-Opener-Policy header
+     * (unsafe-none, same-origin-allow-popups, same-origin, noopener-allow-popups)
+     * Empty string disables the header
+     *
+     * @access public
+     * @var string
+     */
+    public $crossOriginOpenerPolicy = '';
+
+    /**
      * X-Content-Type-Options
      *
      * @access public
@@ -199,6 +210,7 @@ class Headers extends Component implements BootstrapInterface
                     new ReferrerPolicy($this->referrerPolicy),
                     new XssProtection($this->xssProtection, $this->reportUri),
                     new ReportTo($this->reportTo, $this->enableReportTo),
+                    new CrossOriginOpenerPolicy($this->crossOriginOpenerPolicy),
                     new ContentSecurityPolicy($this->cspDirectives, [
                         'requireSriForScript' => $this->requireSriForScript,
                         'requireSriForStyle' => $this->requireSriForStyle,
@@ -207,6 +219,7 @@ class Headers extends Component implements BootstrapInterface
                         'reportOnlyMode' => $this->reportOnlyMode
                     ], $this->reportUri)
                 ];
+
 
                 foreach ($headerPolicy as $policy) {
                     if ($policy->isValid() && !$headers->has($policy->getName())) {

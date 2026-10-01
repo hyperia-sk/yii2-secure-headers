@@ -88,4 +88,53 @@ class HeadersTest extends TestCase
         $this->assertFalse($defaultHeaders->has('permissions-policy'));
         $this->assertFalse($defaultHeaders->has('report-to'));
     }
+
+    public function emptyCrossOriginOpenerPolicy(): array
+    {
+        return [
+            [''],
+            ['   '],
+        ];
+    }
+
+    /**
+     * Empty Cross-Origin-Opener-Policy value disables the header without error
+     *
+     * @param string $value
+     * @dataProvider emptyCrossOriginOpenerPolicy
+     */
+    public function testEmptyCrossOriginOpenerPolicy(string $value): void
+    {
+        $config = require(__DIR__ . '/config/config.php');
+        $config['components']['headers']['crossOriginOpenerPolicy'] = $value;
+
+        $this->mockApplication($config, 'yii\web\Application');
+
+        Yii::$app->trigger(Application::EVENT_BEFORE_REQUEST);
+
+        $headers = Yii::$app->response->getHeaders();
+
+        $this->assertCount(10, $headers);
+        $this->assertFalse($headers->has('cross-origin-opener-policy'));
+    }
+
+    /**
+     * Cross-Origin-Opener-Policy is sent only when configured
+     */
+    public function testCrossOriginOpenerPolicy(): void
+    {
+        $this->assertFalse(Yii::$app->response->getHeaders()->has('cross-origin-opener-policy'));
+
+        $config = require(__DIR__ . '/config/config.php');
+        $config['components']['headers']['crossOriginOpenerPolicy'] = 'same-origin';
+
+        $this->mockApplication($config, 'yii\web\Application');
+
+        Yii::$app->trigger(Application::EVENT_BEFORE_REQUEST);
+
+        $headers = Yii::$app->response->getHeaders();
+
+        $this->assertCount(11, $headers);
+        $this->assertSame('same-origin', $headers->get('cross-origin-opener-policy'));
+    }
 }
