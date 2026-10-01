@@ -210,6 +210,7 @@ class Headers extends Component implements BootstrapInterface
                     new ReferrerPolicy($this->referrerPolicy),
                     new XssProtection($this->xssProtection, $this->reportUri),
                     new ReportTo($this->reportTo, $this->enableReportTo),
+                    new CrossOriginOpenerPolicy($this->crossOriginOpenerPolicy),
                     new ContentSecurityPolicy($this->cspDirectives, [
                         'requireSriForScript' => $this->requireSriForScript,
                         'requireSriForStyle' => $this->requireSriForStyle,
@@ -219,9 +220,6 @@ class Headers extends Component implements BootstrapInterface
                     ], $this->reportUri)
                 ];
 
-                if (trim($this->crossOriginOpenerPolicy) !== '') {
-                    $headerPolicy[] = new CrossOriginOpenerPolicy($this->crossOriginOpenerPolicy);
-                }
 
                 foreach ($headerPolicy as $policy) {
                     if ($policy->isValid() && !$headers->has($policy->getName())) {
