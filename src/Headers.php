@@ -153,7 +153,7 @@ class Headers extends Component implements BootstrapInterface
      * @access public
      * @var string
      */
-    public string $crossOriginOpenerPolicy = '';
+    public $crossOriginOpenerPolicy = '';
 
     /**
      * X-Content-Type-Options
